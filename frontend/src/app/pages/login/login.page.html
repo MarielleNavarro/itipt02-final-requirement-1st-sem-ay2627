@@ -1,0 +1,54 @@
+<ion-content [fullscreen]="true">
+  <div class="login-container">
+
+    <div class="login-card">
+      <div class="logo-section">
+        <img
+          src="assets/logo.png"
+          alt="Medicine Intake Logo"
+          class="app-logo">
+
+        <h1> {{ appName }} </h1>
+        <p> Monitoring Application </p>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <div class="welcome-section">
+        <h2> Welcome Back!</h2>
+        <p> Login to manage your medicine records. </p>
+      </div>
+
+      <div class="form-section">
+        <ion-label> Username </ion-label>
+        <ion-input
+          type="text"
+          placeholder="Enter your username"
+          fill="outline"
+          [(ngModel)]="username">
+        </ion-input>
+
+        <ion-label> Password </ion-label>
+        <ion-input
+          type="password"
+          placeholder="Enter your password"
+          fill="outline"
+          [(ngModel)]="password">
+        </ion-input>
+
+        <div class="forgot-password">
+          <a> Forgot Password? </a>
+        </div>
+
+        <ion-button expand="block" (click)="login()">
+          Login
+        </ion-button>
+
+        <div class="signup-section">
+          <p> Don't have an account? <a> Sign Up </a> </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>
