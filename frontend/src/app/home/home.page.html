@@ -1,21 +1,31 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Blank </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="home-container">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>
-      Start with Ionic
-      <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a>
-    </p>
+    <div class="welcome-content">
+      <img
+        src="assets/logo.jpg"
+        alt="Medicine Intake Logo"
+        class="app-logo">
+
+      <h1> {{ appName }} </h1>
+
+      <p>
+        This is a mobile application designed to help users 
+        record and monitor the medicines they take, whether 
+        for daily maintenance or temporary illnesses. Its 
+        purpose is to provide an organized and accessible 
+        record of the user's medication intake.
+      </p>
+
+      <h4>
+        Keep Track of your medicines and stay organized
+        with your medication records.
+      </h4>
+
+      <ion-button expand="block" routerLink="/login">
+        Get Started
+      </ion-button>
+    </div>
+
   </div>
 </ion-content>
