@@ -10,7 +10,7 @@ import { IonContent, IonLabel, IonInput, IonButton } from '@ionic/angular';
   imports: [ CommonModule, FormsModule, IonContent, IonLabel, IonInput, IonButton],
 })
 export class LoginPage {
-  appName = 'Medicine Intake';
+  appName = 'Med Intake Monitor';
   username = '';
   password = '';
 
