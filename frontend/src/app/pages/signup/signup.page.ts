@@ -1,3 +1,4 @@
+import { RouterLink } from '@angular/router';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +8,7 @@ import { IonContent, IonLabel, IonInput, IonButton } from '@ionic/angular';
   selector: 'app-signup',
   templateUrl: './signup.page.html',
   styleUrls: ['./signup.page.scss'],
-  imports: [CommonModule, FormsModule, IonContent, IonLabel, IonInput, IonButton],
+  imports: [CommonModule, FormsModule, RouterLink, IonContent, IonLabel, IonInput, IonButton],
 })
 export class SignupPage {
   appName = 'Med Intake Monitor';

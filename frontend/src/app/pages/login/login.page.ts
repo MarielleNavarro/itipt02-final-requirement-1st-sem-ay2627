@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonLabel, IonInput, IonButton } from '@ionic/angular';
@@ -7,7 +8,7 @@ import { IonContent, IonLabel, IonInput, IonButton } from '@ionic/angular';
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  imports: [ CommonModule, FormsModule, IonContent, IonLabel, IonInput, IonButton],
+  imports: [ CommonModule, FormsModule, RouterLink, IonContent, IonLabel, IonInput, IonButton],
 })
 export class LoginPage {
   appName = 'Med Intake Monitor';
