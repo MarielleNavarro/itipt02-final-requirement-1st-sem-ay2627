@@ -1,0 +1,99 @@
+<ion-content [fullscreen]="true">
+  <div class="settings-container">
+
+    <!-- page header -->
+    <div class="page-header">
+      <h1> Settings </h1>
+    </div>
+
+    <!-- profile -->
+    <div class="profile-card">
+      <div class="profile-image">
+        <ion-icon name="person-outline"></ion-icon>
+      </div>
+      <div class="profile-info">
+        <h3> Profile </h3>
+        <p> Manage your personal information </p>
+      </div>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </div>
+
+    <!-- settings options -->
+    <div class="settings-card">
+
+      <!-- account security -->
+      <div class="settings-item">
+        <div class="settings-icon">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+        </div>
+        <div class="settings-info">
+          <h3> Account Security </h3>
+          <p> Change password and manage security </p>
+        </div>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+
+      <!-- notifications -->
+      <div class="settings-item">
+        <div class="settings-icon">
+          <ion-icon name="notifications-outline"></ion-icon>
+        </div>
+        <div class="settings-info">
+          <h3> Notifications </h3>
+          <p> Manage medicine intake reminders </p>
+        </div>
+        <ion-toggle checked="true"></ion-toggle>
+      </div>
+
+      <!-- about application -->
+      <div class="settings-item">
+        <div class="settings-icon">
+          <ion-icon name="information-circle-outline"></ion-icon>
+        </div>
+        <div class="settings-info">
+          <h3> About Application </h3>
+          <p> Learn about Medicine Tracker </p>
+        </div>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+
+    </div>
+
+    <!-- logout button -->
+    <button class="logout-button">
+      <ion-icon name="log-out-outline"></ion-icon>
+      <span> Log Out </span>
+    </button>
+
+  </div>
+
+  <!-- bottom navigation -->
+  <div class="bottom-navigation">
+    <div class="nav-item">
+      <ion-icon name="home-outline"></ion-icon>
+      <span> Home </span>
+    </div>
+
+    <div class="nav-item">
+      <ion-icon name="document-text-outline"></ion-icon>
+      <span> Records </span>
+    </div>
+
+    <div class="nav-item add-nav">
+      <div class="add-button">
+        <ion-icon name="add"></ion-icon>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <ion-icon name="time-outline"></ion-icon>
+      <span> History </span>
+    </div>
+
+    <div class="nav-item active">
+      <ion-icon name="settings-outline"></ion-icon>
+      <span> Settings </span>
+    </div>
+  </div>
+
+</ion-content>

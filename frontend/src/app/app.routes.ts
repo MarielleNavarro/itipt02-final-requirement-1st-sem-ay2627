@@ -38,4 +38,8 @@ export const routes: Routes = [
     path: 'history',
     loadComponent: () => import('./pages/history/history.page').then((m) => m.HistoryPage),
   },
+  {
+    path: 'settings',
+    loadComponent: () => import('./pages/settings/settings.page').then((m) => m.SettingsPage),
+  },
 ];
