@@ -1,0 +1,191 @@
+
+ion-content {
+  --background: #faf8ff;
+}
+
+.add-medicine-container {
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: 18px 17px 35px;
+}
+
+// page header
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 22px;
+
+  ion-icon {
+    font-size: 24px;
+    color: #50377d;
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #50377d;
+    margin: 0;
+  }
+}
+
+// image upload
+.image-upload-section {
+  margin-bottom: 22px;
+}
+
+.image-upload-box {
+  min-height: 145px;
+  background: #eee9ff;
+  border: 1.5px dashed #b9a4dc;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 35px;
+    color: #8056bd;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 13px;
+    font-weight: 600;
+    color: #50377d;
+    margin: 0 0 5px;
+  }
+
+  span {
+    font-size: 10px;
+    color: #82768f;
+  }
+}
+
+// medicine form
+.medicine-form {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #50377d;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #e8def3;
+    border-radius: 11px;
+    background: #ffffff;
+    padding: 12px;
+    color: #50377d;
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+  }
+
+  input {
+    min-height: 44px;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 85px;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #aa9dbb;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: #8056bd;
+  }
+}
+
+// category options
+.category-options {
+  display: flex;
+  gap: 10px;
+}
+
+.category-button {
+  flex: 1;
+  min-height: 42px;
+  border: 1px solid #e6ddf3;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #82768f;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.category-button.active {
+  background: #8056bd;
+  border-color: #8056bd;
+  color: #ffffff;
+}
+
+// date fields
+.date-row {
+  display: flex;
+  gap: 12px;
+
+  .form-group {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+// save button
+.save-button {
+    width: 100%;
+    min-height: 46px;
+    border: none;
+    border-radius: 12px;
+    background: #8056bd;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 5px;
+    box-shadow: 0 4px 9px rgba(88, 49, 184, 0.2);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.save-button:active {
+    background: #6841a0;
+}
+
+// small screens
+@media (max-width: 360px) {
+  .add-medicine-container {
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+
+  .date-row {
+    gap: 8px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 10px;
+  }
+}
