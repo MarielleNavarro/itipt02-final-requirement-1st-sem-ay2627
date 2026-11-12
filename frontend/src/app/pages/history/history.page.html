@@ -1,0 +1,87 @@
+<ion-content [fullscreen]="true">
+  <div class="history-container">
+
+    <!-- page header -->
+    <div class="page-header">
+      <h1> Medicine History </h1>
+    </div>
+
+    <!-- history filters -->
+    <div class="history-filters">
+      <button class="filter-button active"> All </button>
+      <button class="filter-button"> Ongoing </button>
+      <button class="filter-button"> Completed </button>
+    </div>
+
+    <!-- medicine history list -->
+    <div class="history-list">
+
+      <div class="history-card">
+        <div class="medicine-image">
+          <ion-icon name="medkit-outline"></ion-icon>
+        </div>
+        <div class="history-info">
+          <h3> Paracetamol </h3>
+          <p> 10 mg </p>
+          <span class="history-date"> Jun 1 - Jun 3, 2026 </span>
+        </div>
+        <span class="status-badge completed"> Completed </span>
+      </div>
+
+      <div class="history-card">
+        <div class="medicine-image">
+          <ion-icon name="medkit-outline"></ion-icon>
+        </div>
+        <div class="history-info">
+          <h3> Cetirizine </h3>
+          <p> 10 mg </p>
+          <span class="history-date"> Jun 1 - Ongoing </span>
+        </div>
+        <span class="status-badge ongoing"> Ongoing </span>
+      </div>
+
+      <div class="history-card">
+        <div class="medicine-image">
+          <ion-icon name="medkit-outline"></ion-icon>
+        </div>
+        <div class="history-info">
+          <h3> Vitamin D </h3>
+          <p> 1000 IU </p>
+          <span class="history-date"> Jun 1 - Ongoing </span>
+        </div>
+        <span class="status-badge ongoing"> Ongoing </span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- bottom navigation -->
+  <div class="bottom-navigation">
+    <div class="nav-item">
+      <ion-icon name="home-outline"></ion-icon>
+      <span> Home </span>
+    </div>
+
+    <div class="nav-item">
+      <ion-icon name="document-text-outline"></ion-icon>
+      <span> Records </span>
+    </div>
+
+    <div class="nav-item add-nav">
+      <div class="add-button">
+        <ion-icon name="add"></ion-icon>
+      </div>
+    </div>
+
+    <div class="nav-item active">
+      <ion-icon name="time-outline"></ion-icon>
+      <span> History </span>
+    </div>
+
+    <div class="nav-item">
+      <ion-icon name="settings-outline"></ion-icon>
+      <span> Settings </span>
+    </div>
+  </div>
+
+</ion-content>
