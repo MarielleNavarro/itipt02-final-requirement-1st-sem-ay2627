@@ -1,0 +1,113 @@
+<ion-content [fullscreen]="true">
+  <div class="records-container">
+
+    <!-- page header -->
+    <div class="page-header">
+      <h1> My Medicines </h1>
+    </div>
+
+    <!-- search bar -->
+    <div class="search-box">
+      <ion-icon name="search-outline"></ion-icon>
+      <input type="text" placeholder="Search medicine...">
+    </div>
+
+    <!-- category filters -->
+    <div class="category-filters">
+      <button class="filter-button active"> All </button>
+      <button class="filter-button"> Maintenance </button>
+      <button class="filter-button"> Temporary </button>
+    </div>
+
+    <!-- medicine list -->
+    <div class="medicine-list">
+
+      <!-- medicine 1 -->
+      <div class="medicine-card">
+        <div class="medicine-image">
+          <ion-icon name="medkit-outline"></ion-icon>
+        </div>
+
+        <div class="medicine-info">
+          <h3> Paracetamol </h3>
+          <p> 500 mg </p>
+          <span class="category-tag temporary"> Temporary </span>
+          <p class="intake-date"> Jun 1 - Jun 3, 2026 </p>
+        </div>
+
+        <button class="menu-button">
+          <ion-icon name="ellipsis-vertical"></ion-icon>
+        </button>
+      </div>
+
+      <!-- medicine 2 -->
+      <div class="medicine-card">
+        <div class="medicine-image">
+          <ion-icon name="medkit-outline"></ion-icon>
+        </div>
+
+        <div class="medicine-info">
+          <h3> Cetirizine </h3>
+          <p> 10 mg </p>
+          <span class="category-tag maintenance"> Maintenance </span>
+          <p class="intake-date"> Jun 1 - Ongoing </p>
+        </div>
+
+        <button class="menu-button">
+          <ion-icon name="ellipsis-vertical"></ion-icon>
+        </button>
+      </div>
+
+      <!-- medicine 3 -->
+      <div class="medicine-card">
+        <div class="medicine-image">
+          <ion-icon name="medkit-outline"></ion-icon>
+        </div>
+
+        <div class="medicine-info">
+          <h3> Vitamin D </h3>
+          <p> 1000 IU </p>
+          <span class="category-tag maintenance"> Maintenance </span>
+          <p class="intake-date"> Jun 1 - Ongoing </p>
+        </div>
+
+        <button class="menu-button">
+          <ion-icon name="ellipsis-vertical"></ion-icon>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-navigation">
+
+    <div class="nav-item">
+      <ion-icon name="home-outline"></ion-icon>
+      <span> Home </span>
+    </div>
+
+    <div class="nav-item active">
+      <ion-icon name="document-text-outline"></ion-icon>
+      <span> Records </span>
+    </div>
+
+    <div class="nav-item add-nav">
+      <div class="add-button">
+        <ion-icon name="add"></ion-icon>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <ion-icon name="time-outline"></ion-icon>
+      <span> History </span>
+    </div>
+
+    <div class="nav-item">
+      <ion-icon name="settings-outline"></ion-icon>
+      <span> Settings </span>
+    </div>
+
+  </div>
+</ion-content>

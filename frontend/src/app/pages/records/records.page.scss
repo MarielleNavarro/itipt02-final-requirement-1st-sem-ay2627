@@ -1,0 +1,247 @@
+
+ion-content {
+  --background: #faf8ff;
+}
+
+.records-container {
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: 25px 18px 100px;
+}
+
+// page header
+.page-header {
+  margin-bottom: 22px;
+
+  h1 {
+    color: #50377d;
+    font-size: 25px;
+    font-weight: 700;
+    margin: 5px 0;
+  }
+}
+
+// search bar
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 15px;
+  background: #ffffff;
+  border: 1px solid #e8def3;
+  border-radius: 13px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 10px rgba(91, 61, 130, 0.07);
+
+  ion-icon {
+    color: #8056bd;
+    font-size: 20px;
+  }
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #50377d;
+    font-size: 13px;
+  }
+
+  input::placeholder {
+    color: #aa9dbb;
+  }
+}
+
+// category filters
+.category-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 22px;
+  overflow-x: auto;
+}
+
+.filter-button {
+  border: 1px solid #e6ddf3;
+  background: #ffffff;
+  color: #82768f;
+  border-radius: 20px;
+  padding: 9px 18px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.filter-button.active {
+  background: #8056bd;
+  border-color: #8056bd;
+  color: #ffffff;
+}
+
+// medicine list
+.medicine-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.medicine-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e8def3;
+  border-radius: 13px;
+  padding: 12px;
+  box-shadow: 0 3px 10px rgba(91, 61, 130, 0.07);
+}
+
+// medicine image
+.medicine-image {
+  width: 58px;
+  height: 55px;
+  flex-shrink: 0;
+  background: #eee9ff;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    font-size: 27px;
+    color: #8056bd;
+  }
+}
+
+// medicine information
+.medicine-info {
+  flex: 1;
+  min-width: 0;
+
+  h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #35264d;
+    margin: 0 0 3px;
+  }
+
+  p {
+    font-size: 10px;
+    color: #82768f;
+    margin: 0 0 5px;
+  }
+
+  .intake-date {
+    font-size: 10px;
+    color: #82768f;
+    margin: 6px 0 0;
+  }
+}
+
+// category tags
+.category-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 5px 9px;
+  border-radius: 12px;
+}
+
+.category-tag.temporary {
+  background: #fff0ed;
+  color: #d77b57;
+}
+
+.category-tag.maintenance {
+  background: #e5f7f2;
+  color: #16a879;
+}
+
+// three-dot menu
+.menu-button {
+  border: none;
+  background: transparent;
+  color: #9388a5;
+  font-size: 20px;
+  padding: 5px;
+  flex-shrink: 0;
+}
+
+// bottom navigation
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #ffffff;
+  border-top: 1px solid #e9e1f1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 4px 5px calc(4px + env(safe-area-inset-bottom));
+  box-sizing: content-box;
+  z-index: 10;
+  box-shadow: 0 -3px 12px rgba(91, 61, 130, 0.06);
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: #9388a5;
+
+  ion-icon {
+    font-size: 19px;
+  }
+
+  span {
+    font-size: 9px;
+    font-weight: 500;
+  }
+
+  &.active {
+    color: #82218b;
+  }
+}
+
+// add button
+.add-nav {
+  margin-top: 0;
+
+  .add-button {
+    width: 42px;
+    height: 42px;
+    margin-top: -23px;
+    border-radius: 50%;
+    background: #8056bd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 9px rgba(88, 49, 184, 0.2);
+
+    ion-icon {
+      font-size: 28px;
+      color: #ffffff;
+    }
+  }
+}
+
+// small screens
+@media (max-width: 360px) {
+  .records-container {
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+
+  .page-header h1 {
+    font-size: 23px;
+  }
+
+  .medicine-card {
+    gap: 9px;
+    padding: 10px;
+  }
+}
