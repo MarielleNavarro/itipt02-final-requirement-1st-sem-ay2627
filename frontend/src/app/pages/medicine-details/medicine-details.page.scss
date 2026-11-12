@@ -1,0 +1,201 @@
+
+ion-content {
+  --background: #faf8ff;
+}
+
+/* main container */
+.details-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 18px 17px 110px;
+  box-sizing: border-box;
+}
+
+// page header
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 22px;
+
+  ion-icon {
+    font-size: 24px;
+    color: #50377d;
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #50377d;
+    margin: 0;
+  }
+}
+
+/* medicine image */
+.medicine-image-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.medicine-image {
+  width: 100%;
+  max-width: 380px;
+  height: 210px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #eee9ff;
+  border: 1px solid #e8def3;
+  border-radius: 15px;
+  overflow: hidden;
+
+  ion-icon {
+    font-size: 95px;
+    color: #8056bd;
+  }
+}
+
+/* medicine name and category */
+.medicine-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #50377d;
+  }
+}
+
+.category-tag {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+
+  &.temporary {
+    background: #fff0ed;
+    color: #d77b57;
+  }
+}
+
+/* medicine information */
+.details-card {
+  padding: 17px;
+  background: #ffffff;
+  border: 1px solid #e8def3;
+  border-radius: 13px;
+  box-shadow: 0 3px 10px rgba(91, 61, 130, 0.07);
+}
+
+/* dosage and reason */
+.detail-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0ebf6;
+}
+
+.detail-item {
+  .detail-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #806a9d;
+  }
+
+  p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: #3f3450;
+  }
+}
+
+/* intake period */
+.intake-period {
+  padding-top: 15px;
+}
+
+/* fixed bottom action buttons */
+.action-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  display: flex;
+  gap: 12px;
+  padding: 12px 17px calc(12px + env(safe-area-inset-bottom));
+  background: #ffffff;
+  border-top: 1px solid #e8def3;
+  box-shadow: 0 -3px 10px rgba(91, 61, 130, 0.06);
+  z-index: 10;
+
+  button {
+    flex: 1;
+    height: 46px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .edit-button {
+    background: #8056bd;
+    color: #ffffff;
+  }
+
+  .delete-button {
+    background: #fff0f0;
+    color: #d65b68;
+    border: 1px solid #f3d5d8;
+  }
+}
+
+/* small screen adjustment */
+@media (max-width: 400px) {
+  .medicine-image {
+    height: 180px;
+  }
+
+  .medicine-heading h2 {
+    font-size: 21px;
+  }
+
+  .details-card {
+    padding: 14px;
+  }
+}
+
+/* laptop screen adjustment */
+@media (min-width: 768px) {
+
+  .details-container {
+    max-width: 900px;
+  }
+
+  .page-header {
+    max-width: 900px;
+  }
+
+  .action-buttons {
+    max-width: 900px;
+  }
+
+}

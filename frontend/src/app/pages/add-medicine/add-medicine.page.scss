@@ -32,6 +32,9 @@ ion-content {
 // image upload
 .image-upload-section {
   margin-bottom: 22px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .image-upload-box {
@@ -45,6 +48,9 @@ ion-content {
   justify-content: center;
   text-align: center;
   cursor: pointer;
+  width: 100%;
+  max-width: 380px;
+  box-sizing: border-box;
 
   ion-icon {
     font-size: 35px;
