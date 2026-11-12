@@ -1,0 +1,115 @@
+<ion-content [fullscreen]="true">
+  <div class="dashboard-container">
+
+    <!-- greeting -->
+     <div class="greeting-section">
+      <h2> Hello, {{ firstName }}! </h2>
+     </div>
+
+    <!-- app header -->
+    <div class="app-header">
+      <img src="assets/logo.jpg" alt="Medicine Intake Logo">
+      
+      <h1> {{ appName }} </h1>
+      <p>
+        Take your medicine on time,<br>for a healthier you!
+      </p>
+    </div>
+
+    <!-- today's intake -->
+    <div class="intake-card">
+      <div>
+        <h2> Today's Intake </h2>
+        <h3> 1 / 2 </h3>
+      </div>
+      <div class="intake-check">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </div>
+    </div>
+
+    <!-- overview -->
+    <div class="section-heading">
+      <h2>Overview</h2>
+      <span>View All <ion-icon name="arrow-forward"></ion-icon></span>
+    </div>
+
+    <div class="overview-grid">
+
+      <div class="overview-card total-card">
+        <div class="overview-icon">
+          <ion-icon name="medkit-outline"></ion-icon>
+        </div>
+        <p> Total Medicines </p>
+        <h3> {{ totalMedicines() }} </h3>
+      </div>
+
+      <div class="overview-card ongoing-card">
+        <div class="overview-icon">
+          <ion-icon name="calendar-outline"></ion-icon>
+        </div>
+        <p> Ongoing </p>
+        <h3> {{ ongoingMedicines() }} </h3>
+      </div>
+
+      <div class="overview-card complete-card">
+        <div class="overview-icon">
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </div>
+        <p> Completed </p>
+        <h3> {{ completedMedicines() }} </h3>
+      </div>
+    </div>
+
+    <!-- upcoming today -->
+    <div class="section-heading upcoming-heading">
+      <h2> Upcoming Today </h2>
+      <span> View All <ion-icon name="arrow-forward"></ion-icon> </span>
+    </div>
+
+    <div class="upcoming-card" *ngFor="let medicine of upcomingToday">
+      <div class="medicine-image">
+        <ion-icon name="medkit-outline"></ion-icon>
+      </div>
+
+      <div class="medicine-info">
+        <h3> {{ medicine.name }} </h3>
+        <p> {{ medicine.dosage }} </p>
+        <span> Take at: {{ medicine.time }} </span>
+      </div>
+
+      <div class="medicine-check">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </div>
+    </div>
+
+    <!-- bottom navigation -->
+    <div class="bottom-navigation">
+      <div class="nav-item active">
+        <ion-icon name="home-outline"></ion-icon>
+        <span> Home </span>
+      </div>
+
+      <div class="nav-item">
+        <ion-icon name="document-text-outline"></ion-icon>
+        <span> Records </span>
+      </div>
+
+      <div class="nav-item add-nav">
+        <div class="add-button">
+          <ion-icon name="add"></ion-icon>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <ion-icon name="time-outline"></ion-icon>
+        <span> History </span>
+      </div>
+
+      <div class="nav-item">
+        <ion-icon name="settings-outline"></ion-icon>
+        <span> Settings </span>
+      </div>
+    </div>
+
+  </div>
+</ion-content>
