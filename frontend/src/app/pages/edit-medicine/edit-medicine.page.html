@@ -1,0 +1,70 @@
+
+<ion-content [fullscreen]="true">
+  <div class="edit-medicine-container">
+
+    <!-- page header -->
+    <div class="page-header">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+      <h1>Edit Medicine</h1>
+    </div>
+
+    <!-- medicine image -->
+    <div class="image-upload-section">
+      <div class="image-upload-box">
+        <ion-icon name="camera-outline"></ion-icon>
+        <p>Change Medicine Image</p>
+        <span>Tap to choose from photos</span>
+      </div>
+    </div>
+
+    <!-- medicine form -->
+    <div class="medicine-form">
+
+      <div class="form-group">
+        <label>Medicine Name</label>
+        <input type="text" value="Paracetamol">
+      </div>
+
+      <div class="form-group">
+        <label>Dosage</label>
+        <input type="text" value="500 mg">
+      </div>
+
+      <div class="form-group">
+        <label>Category</label>
+        <div class="category-options">
+          <button type="button" class="category-button">Maintenance</button>
+          <button type="button" class="category-button active">Temporary</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Reason for Taking</label>
+        <input type="text" value="Fever">
+      </div>
+
+      <div class="date-row">
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" value="2026-06-01">
+        </div>
+
+        <div class="form-group">
+          <label>End Date</label>
+          <input type="date" value="2026-06-03">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Notes (Optional)</label>
+        <textarea rows="3" placeholder="Add notes here..."></textarea>
+      </div>
+
+      <!-- update button -->
+      <button type="button" class="save-button">
+        Update Medicine
+      </button>
+
+    </div>
+  </div>
+</ion-content>

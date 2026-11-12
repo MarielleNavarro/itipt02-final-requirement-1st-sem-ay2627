@@ -46,4 +46,8 @@ export const routes: Routes = [
     path: 'medicine-details',
     loadComponent: () => import('./pages/medicine-details/medicine-details.page').then((m) => m.MedicineDetailsPage),
   },
+  {
+    path: 'edit-medicine',
+    loadComponent: () => import('./pages/edit-medicine/edit-medicine.page').then((m) => m.EditMedicinePage),
+  },
 ];
