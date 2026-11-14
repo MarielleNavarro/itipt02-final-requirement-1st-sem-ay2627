@@ -6,6 +6,7 @@ require('dotenv').config();
 const db = require('./db');
 const authRoutes = require('./routes/auth');
 const medicineRoutes = require('./routes/medicines');
+const historyRoutes = require('./routes/history');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ app.use(express.json());
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/medicines', medicineRoutes);
+app.use('/api/history', historyRoutes);
 
 // Test route
 app.get('/', (req, res) => {
