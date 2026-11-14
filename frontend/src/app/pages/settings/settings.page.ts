@@ -1,7 +1,9 @@
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { IonContent, IonIcon, IonToggle } from '@ionic/angular';
-import { addIcons } from 'ionicons'; 
+import { addIcons } from 'ionicons';
 import {
   personOutline,
   chevronForwardOutline,
@@ -20,7 +22,7 @@ import {
   selector: 'app-settings',
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
-  imports: [CommonModule, IonContent, IonIcon, IonToggle],
+  imports: [CommonModule, RouterLink, IonContent, IonIcon, IonToggle],
 })
 export class SettingsPage {
   constructor() {
@@ -38,6 +40,4 @@ export class SettingsPage {
       settingsOutline
     });
   }
-
-  ngOnInit() {}
 }

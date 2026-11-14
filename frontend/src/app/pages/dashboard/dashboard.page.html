@@ -1,15 +1,16 @@
+
 <ion-content [fullscreen]="true">
   <div class="dashboard-container">
 
     <!-- greeting -->
-     <div class="greeting-section">
+    <div class="greeting-section">
       <h2> Hello, {{ firstName }}! </h2>
-     </div>
+    </div>
 
     <!-- app header -->
     <div class="app-header">
       <img src="assets/logo.jpg" alt="Medicine Intake Logo">
-      
+
       <h1> {{ appName }} </h1>
       <p>
         Take your medicine on time,<br>for a healthier you!
@@ -84,31 +85,33 @@
 
     <!-- bottom navigation -->
     <div class="bottom-navigation">
-      <div class="nav-item active">
+
+      <div class="nav-item active" routerLink="/dashboard">
         <ion-icon name="home-outline"></ion-icon>
         <span> Home </span>
       </div>
 
-      <div class="nav-item">
+      <div class="nav-item" routerLink="/records">
         <ion-icon name="document-text-outline"></ion-icon>
         <span> Records </span>
       </div>
 
-      <div class="nav-item add-nav">
+      <div class="nav-item add-nav" routerLink="/add-medicine">
         <div class="add-button">
           <ion-icon name="add"></ion-icon>
         </div>
       </div>
 
-      <div class="nav-item">
+      <div class="nav-item" routerLink="/history">
         <ion-icon name="time-outline"></ion-icon>
         <span> History </span>
       </div>
 
-      <div class="nav-item">
+      <div class="nav-item" routerLink="/settings">
         <ion-icon name="settings-outline"></ion-icon>
         <span> Settings </span>
       </div>
+
     </div>
 
   </div>

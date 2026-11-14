@@ -1,3 +1,4 @@
+
 <ion-content [fullscreen]="true">
   <div class="records-container">
 
@@ -23,7 +24,9 @@
     <div class="medicine-list">
 
       <!-- medicine 1 -->
-      <div class="medicine-card">
+      <div class="medicine-card"
+           routerLink="/medicine-details"
+           style="cursor: pointer;">
         <div class="medicine-image">
           <ion-icon name="medkit-outline"></ion-icon>
         </div>
@@ -41,7 +44,9 @@
       </div>
 
       <!-- medicine 2 -->
-      <div class="medicine-card">
+      <div class="medicine-card"
+           routerLink="/medicine-details"
+           style="cursor: pointer;">
         <div class="medicine-image">
           <ion-icon name="medkit-outline"></ion-icon>
         </div>
@@ -59,7 +64,9 @@
       </div>
 
       <!-- medicine 3 -->
-      <div class="medicine-card">
+      <div class="medicine-card"
+           routerLink="/medicine-details"
+           style="cursor: pointer;">
         <div class="medicine-image">
           <ion-icon name="medkit-outline"></ion-icon>
         </div>
@@ -83,28 +90,28 @@
   <!-- Bottom Navigation -->
   <div class="bottom-navigation">
 
-    <div class="nav-item">
+    <div class="nav-item" routerLink="/dashboard">
       <ion-icon name="home-outline"></ion-icon>
       <span> Home </span>
     </div>
 
-    <div class="nav-item active">
+    <div class="nav-item active" routerLink="/records">
       <ion-icon name="document-text-outline"></ion-icon>
       <span> Records </span>
     </div>
 
-    <div class="nav-item add-nav">
+    <div class="nav-item add-nav" routerLink="/add-medicine">
       <div class="add-button">
         <ion-icon name="add"></ion-icon>
       </div>
     </div>
 
-    <div class="nav-item">
+    <div class="nav-item" routerLink="/history">
       <ion-icon name="time-outline"></ion-icon>
       <span> History </span>
     </div>
 
-    <div class="nav-item">
+    <div class="nav-item" routerLink="/settings">
       <ion-icon name="settings-outline"></ion-icon>
       <span> Settings </span>
     </div>

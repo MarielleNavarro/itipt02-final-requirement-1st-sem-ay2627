@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { 
@@ -15,7 +16,7 @@ import {
   selector: 'app-history',
   templateUrl: './history.page.html',
   styleUrls: ['./history.page.scss'],
-  imports: [CommonModule, IonContent, IonIcon],
+  imports: [CommonModule, RouterLink, IonContent, IonIcon],
 })
 export class HistoryPage {
   constructor() {

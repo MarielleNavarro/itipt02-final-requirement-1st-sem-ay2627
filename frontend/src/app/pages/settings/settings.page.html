@@ -1,3 +1,4 @@
+
 <ion-content [fullscreen]="true">
   <div class="settings-container">
 
@@ -62,38 +63,50 @@
     <!-- logout button -->
     <button class="logout-button">
       <ion-icon name="log-out-outline"></ion-icon>
-      <span> Log Out </span>
+      <span> Log Out</span>
     </button>
-
+ 
   </div>
 
   <!-- bottom navigation -->
   <div class="bottom-navigation">
-    <div class="nav-item">
+
+    <div class="nav-item"
+         routerLink="/dashboard"
+         style="cursor: pointer;">
       <ion-icon name="home-outline"></ion-icon>
       <span> Home </span>
     </div>
 
-    <div class="nav-item">
+    <div class="nav-item"
+         routerLink="/records"
+         style="cursor: pointer;">
       <ion-icon name="document-text-outline"></ion-icon>
       <span> Records </span>
     </div>
 
-    <div class="nav-item add-nav">
+    <div class="nav-item add-nav"
+         routerLink="/add-medicine"
+         style="cursor: pointer;">
       <div class="add-button">
         <ion-icon name="add"></ion-icon>
       </div>
     </div>
 
-    <div class="nav-item">
+    <div class="nav-item"
+         routerLink="/history"
+         style="cursor: pointer;">
       <ion-icon name="time-outline"></ion-icon>
       <span> History </span>
     </div>
 
-    <div class="nav-item active">
+    <div class="nav-item active"
+         routerLink="/settings"
+         style="cursor: pointer;">
       <ion-icon name="settings-outline"></ion-icon>
       <span> Settings </span>
     </div>
+
   </div>
 
 </ion-content>

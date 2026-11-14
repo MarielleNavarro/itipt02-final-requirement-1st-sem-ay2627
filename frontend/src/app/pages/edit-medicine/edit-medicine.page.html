@@ -4,7 +4,11 @@
 
     <!-- page header -->
     <div class="page-header">
-      <ion-icon name="arrow-back-outline"></ion-icon>
+      <ion-icon
+        name="arrow-back-outline"
+        routerLink="/medicine-details"
+        style="cursor: pointer;">
+      </ion-icon>
       <h1>Edit Medicine</h1>
     </div>
 
@@ -61,7 +65,11 @@
       </div>
 
       <!-- update button -->
-      <button type="button" class="save-button">
+      <button
+        type="button"
+        class="save-button"
+        routerLink="/medicine-details"
+        style="cursor: pointer;">
         Update Medicine
       </button>
 

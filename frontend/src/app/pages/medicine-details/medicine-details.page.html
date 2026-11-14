@@ -5,7 +5,11 @@
 
     <!-- page header -->
     <div class="page-header">
-      <ion-icon name="arrow-back-outline"></ion-icon>
+      <ion-icon
+        name="arrow-back-outline"
+        routerLink="/records"
+        style="cursor: pointer;">
+      </ion-icon>
       <h1>Medicine Details</h1>
     </div>
 
@@ -53,12 +57,17 @@
   <!-- fixed bottom action buttons -->
   <div class="action-buttons">
 
-    <button class="edit-button">
+    <button
+      class="edit-button"
+      routerLink="/edit-medicine"
+      style="cursor: pointer;">
       <ion-icon name="create-outline"></ion-icon>
       <span>Edit</span>
     </button>
 
-    <button class="delete-button">
+    <button
+      class="delete-button"
+      style="cursor: pointer;">
       <ion-icon name="trash-outline"></ion-icon>
       <span>Delete</span>
     </button>

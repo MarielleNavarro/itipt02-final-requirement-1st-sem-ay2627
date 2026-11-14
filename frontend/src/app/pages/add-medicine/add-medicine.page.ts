@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, cameraOutline } from 'ionicons/icons';
@@ -8,7 +9,7 @@ import { arrowBackOutline, cameraOutline } from 'ionicons/icons';
   selector: 'app-add-medicine',
   templateUrl: './add-medicine.page.html',
   styleUrls: ['./add-medicine.page.scss'],
-  imports: [CommonModule, IonContent, IonIcon],
+  imports: [CommonModule, RouterLink, IonContent, IonIcon],
 })
 export class AddMedicinePage {
   constructor() {
