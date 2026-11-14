@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const db = require('./db');
 const authRoutes = require('./routes/auth');
+const medicineRoutes = require('./routes/medicines');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,8 +14,9 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Authentication API routes
+// API routes
 app.use('/api/auth', authRoutes);
+app.use('/api/medicines', medicineRoutes);
 
 // Test route
 app.get('/', (req, res) => {
