@@ -14,6 +14,8 @@ import {
   calendarOutline
 } from 'ionicons/icons';
 
+import { AuthService } from '../../services/auth.service';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
@@ -36,9 +38,15 @@ export class DashboardPage {
       dosage: '10 mg',
       time: '8:00 PM'
     }
-  ]
+  ];
 
-  constructor() {
+  constructor(private authService: AuthService) {
+
+    // GET LOGGED-IN USER INFORMATION
+    const user = this.authService.getCurrentUser();
+
+    this.firstName = user?.first_name || '';
+
     addIcons({
       homeOutline,
       documentTextOutline,
@@ -50,5 +58,5 @@ export class DashboardPage {
       calendarOutline
     });
   }
-  
+
 }
