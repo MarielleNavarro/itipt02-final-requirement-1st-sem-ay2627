@@ -46,12 +46,24 @@ export class AddMedicinePage {
     if (
       !this.medicineName.trim() ||
       !this.dosage.trim() ||
+      !this.category ||
       !this.reason.trim() ||
       !this.startDate
     ) {
       const alert = await this.alertController.create({
         header: 'Incomplete Information',
         message: 'Please fill in all required fields.',
+        buttons: ['OK']
+      });
+
+      await alert.present();
+      return;
+    } 
+
+    if (this.endDate && this.endDate < this.startDate) {
+      const alert = await this.alertController.create({
+        header: 'Invalid Date',
+        message: 'End Date cannot be earlier than Start Date.',
         buttons: ['OK']
       });
 

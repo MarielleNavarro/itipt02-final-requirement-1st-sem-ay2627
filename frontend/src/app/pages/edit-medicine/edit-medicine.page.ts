@@ -107,10 +107,19 @@ export class EditMedicinePage implements OnInit {
     if (
       !this.medicineName.trim() ||
       !this.dosage.trim() ||
+      !this.category ||
       !this.reason.trim() ||
       !this.startDate
     ) {
       this.showAlert('Incomplete Information', 'Please fill in all required fields.');
+      return;
+    }
+
+    if (this.endDate && this.endDate < this.startDate) {
+      this.showAlert(
+        'Invalid Date',
+        'End Date cannot be earlier than Start Date.'
+      );
       return;
     }
 
