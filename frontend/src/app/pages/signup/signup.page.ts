@@ -92,10 +92,23 @@ export class SignupPage {
         this.password = '';
         this.confirmPassword = '';
 
-        // SHOW SUCCESS ALERT
-        const alert = await this.alertController.create({
+        // FIRST ALERT: REGISTRATION SUCCESSFUL
+        const successAlert = await this.alertController.create({
           header: 'Registration Successful',
           message: response.message,
+          buttons: ['OK']
+        });
+
+        await successAlert.present();
+        await successAlert.onDidDismiss();
+
+        // SECOND ALERT: SHOW RECOVERY CODE
+        const recoveryAlert = await this.alertController.create({
+          header: 'Your Recovery Code',
+          subHeader: response.recoveryCode,
+          message:
+            'Please save this code in a safe place. You will need it if you forget your password.',
+          cssClass: 'recovery-code-alert',
           buttons: [
             {
               text: 'OK',
@@ -106,7 +119,7 @@ export class SignupPage {
           ]
         });
 
-        await alert.present();
+        await recoveryAlert.present();
       },
 
       error: (error) => {
