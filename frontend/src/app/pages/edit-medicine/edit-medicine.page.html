@@ -2,77 +2,119 @@
 <ion-content [fullscreen]="true">
   <div class="edit-medicine-container">
 
-    <!-- page header -->
+    <!-- PAGE HEADER -->
     <div class="page-header">
       <ion-icon
         name="arrow-back-outline"
-        routerLink="/medicine-details"
+        [routerLink]="['/medicine-details', medicineId]"
         style="cursor: pointer;">
       </ion-icon>
       <h1>Edit Medicine</h1>
     </div>
 
-    <!-- medicine image -->
-    <div class="image-upload-section">
-      <div class="image-upload-box">
-        <ion-icon name="camera-outline"></ion-icon>
-        <p>Change Medicine Image</p>
-        <span>Tap to choose from photos</span>
-      </div>
+    <!-- LOADING MESSAGE -->
+    <div *ngIf="isLoading">
+      <p>Loading medicine details...</p>
     </div>
 
-    <!-- medicine form -->
-    <div class="medicine-form">
+    <!-- MEDICINE FORM -->
+    <div class="medicine-form" *ngIf="!isLoading && medicine">
 
-      <div class="form-group">
-        <label>Medicine Name</label>
-        <input type="text" value="Paracetamol">
-      </div>
-
-      <div class="form-group">
-        <label>Dosage</label>
-        <input type="text" value="500 mg">
-      </div>
-
-      <div class="form-group">
-        <label>Category</label>
-        <div class="category-options">
-          <button type="button" class="category-button">Maintenance</button>
-          <button type="button" class="category-button active">Temporary</button>
+      <!-- MEDICINE IMAGE -->
+      <div class="image-upload-section">
+        <div class="image-upload-box">
+          <ion-icon name="camera-outline"></ion-icon>
+          <p>Change Medicine Image</p>
+          <span>Tap to choose from photos</span>
         </div>
       </div>
 
+      <!-- MEDICINE NAME -->
       <div class="form-group">
-        <label>Reason for Taking</label>
-        <input type="text" value="Fever">
+        <label>Medicine Name</label>
+        <input
+          type="text"
+          [(ngModel)]="medicineName">
       </div>
 
+      <!-- DOSAGE -->
+      <div class="form-group">
+        <label>Dosage</label>
+        <input
+          type="text"
+          [(ngModel)]="dosage">
+      </div>
+
+      <!-- CATEGORY -->
+      <div class="form-group">
+        <label>Category</label>
+
+        <div class="category-options">
+          <button
+            type="button"
+            class="category-button"
+            [class.active]="category === 'Maintenance'"
+            (click)="category = 'Maintenance'">
+            Maintenance
+          </button>
+
+          <button
+            type="button"
+            class="category-button"
+            [class.active]="category === 'Temporary'"
+            (click)="category = 'Temporary'">
+            Temporary
+          </button>
+        </div>
+      </div>
+
+      <!-- REASON -->
+      <div class="form-group">
+        <label>Reason for Taking</label>
+        <input
+          type="text"
+          [(ngModel)]="reason">
+      </div>
+
+      <!-- DATES -->
       <div class="date-row">
+
         <div class="form-group">
           <label>Start Date</label>
-          <input type="date" value="2026-06-01">
+          <input
+            type="date"
+            [(ngModel)]="startDate">
         </div>
 
         <div class="form-group">
           <label>End Date</label>
-          <input type="date" value="2026-06-03">
+          <input
+            type="date"
+            [(ngModel)]="endDate">
         </div>
+
       </div>
 
+      <!-- NOTES -->
       <div class="form-group">
         <label>Notes (Optional)</label>
-        <textarea rows="3" placeholder="Add notes here..."></textarea>
+        <textarea
+          rows="3"
+          placeholder="Add notes here..."
+          [(ngModel)]="notes">
+        </textarea>
       </div>
 
-      <!-- update button -->
+      <!-- UPDATE BUTTON -->
       <button
         type="button"
         class="save-button"
-        routerLink="/medicine-details"
+        (click)="updateMedicine()"
         style="cursor: pointer;">
         Update Medicine
       </button>
 
     </div>
+
   </div>
 </ion-content>

@@ -3,16 +3,16 @@ ion-content {
   --background: #faf8ff;
 }
 
-/* main container */
+/* MAIN CONTAINER */
 .details-container {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 18px 17px 110px;
+  padding: 18px 17px 40px;
   box-sizing: border-box;
 }
 
-// page header
+/* PAGE HEADER */
 .page-header {
   display: flex;
   align-items: center;
@@ -32,7 +32,7 @@ ion-content {
   }
 }
 
-/* medicine image */
+/* MEDICINE IMAGE */
 .medicine-image-section {
   display: flex;
   justify-content: center;
@@ -57,7 +57,7 @@ ion-content {
   }
 }
 
-/* medicine name and category */
+/* MEDICINE NAME AND CATEGORY */
 .medicine-heading {
   display: flex;
   align-items: center;
@@ -86,7 +86,7 @@ ion-content {
   }
 }
 
-/* medicine information */
+/* MEDICINE INFORMATION */
 .details-card {
   padding: 17px;
   background: #ffffff;
@@ -95,7 +95,7 @@ ion-content {
   box-shadow: 0 3px 10px rgba(91, 61, 130, 0.07);
 }
 
-/* dosage and reason */
+/* DOSAGE AND REASON */
 .detail-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -121,54 +121,20 @@ ion-content {
   }
 }
 
-/* intake period */
+/* INTAKE PERIOD */
 .intake-period {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0ebf6;
+}
+
+/* NOTES */
+.notes-section {
   padding-top: 15px;
 }
 
-/* fixed bottom action buttons */
-.action-buttons {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 600px;
-  box-sizing: border-box;
-  display: flex;
-  gap: 12px;
-  padding: 12px 17px calc(12px + env(safe-area-inset-bottom));
-  background: #ffffff;
-  border-top: 1px solid #e8def3;
-  box-shadow: 0 -3px 10px rgba(91, 61, 130, 0.06);
-  z-index: 10;
 
-  button {
-    flex: 1;
-    height: 46px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 7px;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-  }
-
-  .edit-button {
-    background: #8056bd;
-    color: #ffffff;
-  }
-
-  .delete-button {
-    background: #fff0f0;
-    color: #d65b68;
-    border: 1px solid #f3d5d8;
-  }
-}
-
-/* small screen adjustment */
+/* SMALL SCREEN ADJUSTMENT */
 @media (max-width: 400px) {
   .medicine-image {
     height: 180px;
@@ -183,9 +149,8 @@ ion-content {
   }
 }
 
-/* laptop screen adjustment */
+/* LAPTOP SCREEN ADJUSTMENT */
 @media (min-width: 768px) {
-
   .details-container {
     max-width: 900px;
   }
@@ -193,9 +158,4 @@ ion-content {
   .page-header {
     max-width: 900px;
   }
-
-  .action-buttons {
-    max-width: 900px;
-  }
-
 }

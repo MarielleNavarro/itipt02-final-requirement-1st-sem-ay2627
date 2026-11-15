@@ -43,11 +43,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/settings/settings.page').then((m) => m.SettingsPage),
   },
   {
-    path: 'medicine-details',
+    path: 'medicine-details/:id',
     loadComponent: () => import('./pages/medicine-details/medicine-details.page').then((m) => m.MedicineDetailsPage),
   },
   {
-    path: 'edit-medicine',
+    path: 'edit-medicine/:id',
     loadComponent: () => import('./pages/edit-medicine/edit-medicine.page').then((m) => m.EditMedicinePage),
   },
 ];

@@ -3,7 +3,7 @@
 
   <div class="details-container">
 
-    <!-- page header -->
+    <!-- PAGE HEADER -->
     <div class="page-header">
       <ion-icon
         name="arrow-back-outline"
@@ -13,64 +13,77 @@
       <h1>Medicine Details</h1>
     </div>
 
-    <!-- medicine image -->
-    <div class="medicine-image-section">
-      <div class="medicine-image">
-        <ion-icon name="medkit-outline"></ion-icon>
+    <!-- LOADING MESSAGE -->
+    <div *ngIf="isLoading">
+      <p>Loading medicine details...</p>
+    </div>
+
+    <!-- ERROR MESSAGE -->
+    <div *ngIf="!isLoading && errorMessage">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- MEDICINE DETAILS -->
+    <div *ngIf="!isLoading && medicine">
+
+      <!-- MEDICINE IMAGE -->
+      <div class="medicine-image-section">
+        <div class="medicine-image">
+          <ion-icon name="medkit-outline"></ion-icon>
+        </div>
       </div>
-    </div>
 
-    <!-- medicine name and category -->
-    <div class="medicine-heading">
-      <h2>Paracetamol</h2>
-      <span class="category-tag temporary">Temporary</span>
-    </div>
+      <!-- MEDICINE NAME AND CATEGORY -->
+      <div class="medicine-heading">
+        <h2>{{ medicine.medicine_name }}</h2>
 
-    <!-- medicine information -->
-    <div class="details-card">
+        <span
+          class="category-tag"
+          [class.temporary]="medicine.category === 'Temporary'">
+          {{ medicine.category }}
+        </span>
+      </div>
 
-      <!-- dosage and reason -->
-      <div class="detail-row">
+      <!-- MEDICINE INFORMATION -->
+      <div class="details-card">
 
-        <div class="detail-item">
-          <span class="detail-label">Dosage:</span>
-          <p>500 mg</p>
+        <!-- DOSAGE AND REASON -->
+        <div class="detail-row">
+
+          <div class="detail-item">
+            <span class="detail-label">Dosage:</span>
+            <p>{{ medicine.dosage }}</p>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Reason:</span>
+            <p>{{ medicine.reason }}</p>
+          </div>
+
         </div>
 
-        <div class="detail-item">
-          <span class="detail-label">Reason:</span>
-          <p>Fever</p>
+        <!-- INTAKE PERIOD -->
+        <div class="detail-item intake-period">
+          <span class="detail-label">Intake Period</span>
+
+          <p>
+            {{ medicine.start_date | date:'MMM d, yyyy' }}
+            -
+            {{ medicine.end_date
+              ? (medicine.end_date | date:'MMM d, yyyy')
+              : 'Ongoing / No end date' }}
+          </p>
+        </div>
+
+        <!-- NOTES -->
+        <div class="detail-item notes-section" *ngIf="medicine.notes">
+          <span class="detail-label">Notes</span>
+          <p>{{ medicine.notes }}</p>
         </div>
 
       </div>
 
-      <!-- intake period -->
-      <div class="detail-item intake-period">
-        <span class="detail-label">Intake Period</span>
-        <p>Jun 1 - Jun 3, 2026</p>
-      </div>
-
     </div>
-
-  </div>
-
-  <!-- fixed bottom action buttons -->
-  <div class="action-buttons">
-
-    <button
-      class="edit-button"
-      routerLink="/edit-medicine"
-      style="cursor: pointer;">
-      <ion-icon name="create-outline"></ion-icon>
-      <span>Edit</span>
-    </button>
-
-    <button
-      class="delete-button"
-      style="cursor: pointer;">
-      <ion-icon name="trash-outline"></ion-icon>
-      <span>Delete</span>
-    </button>
 
   </div>
 

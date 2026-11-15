@@ -324,3 +324,29 @@ ion-content {
     color: #dc6868;
   }
 }
+
+
+
+/* HOVER EFFECTS */
+.menu-button {
+  transition: background 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background: #f1ebfa;
+    color: #8056bd;
+  }
+}
+
+.quick-action-item {
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #f1ebfa;
+  }
+}
+
+.quick-action-item.delete-action {
+  &:hover {
+    background: #fff0ed;
+  }
+}
