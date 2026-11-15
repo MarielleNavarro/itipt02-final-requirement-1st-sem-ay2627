@@ -2,102 +2,121 @@
 <ion-content [fullscreen]="true">
   <div class="records-container">
 
-    <!-- page header -->
+    <!-- PAGE HEADER -->
     <div class="page-header">
-      <h1> My Medicines </h1>
+      <h1>My Medicines</h1>
     </div>
 
-    <!-- search bar -->
+    <!-- SEARCH BAR -->
     <div class="search-box">
       <ion-icon name="search-outline"></ion-icon>
       <input type="text" placeholder="Search medicine...">
     </div>
 
-    <!-- category filters -->
+    <!-- CATEGORY FILTERS -->
     <div class="category-filters">
-      <button class="filter-button active"> All </button>
-      <button class="filter-button"> Maintenance </button>
-      <button class="filter-button"> Temporary </button>
+      <button class="filter-button active">All</button>
+      <button class="filter-button">Maintenance</button>
+      <button class="filter-button">Temporary</button>
     </div>
 
-    <!-- medicine list -->
-    <div class="medicine-list">
+    <!-- LOADING MESSAGE -->
+    <div class="medicine-list" *ngIf="isLoading">
+      <p>Loading medicines...</p>
+    </div>
 
-      <!-- medicine 1 -->
-      <div class="medicine-card"
-           routerLink="/medicine-details"
-           style="cursor: pointer;">
+    <!-- ERROR MESSAGE -->
+    <div class="medicine-list" *ngIf="!isLoading && errorMessage">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- MEDICINE LIST -->
+    <div class="medicine-list" *ngIf="!isLoading && !errorMessage">
+
+      <div
+        class="medicine-card"
+        *ngFor="let medicine of medicines"
+        (click)="openMedicineDetails(medicine.id)"
+        style="cursor: pointer;">
+
         <div class="medicine-image">
           <ion-icon name="medkit-outline"></ion-icon>
         </div>
 
         <div class="medicine-info">
-          <h3> Paracetamol </h3>
-          <p> 500 mg </p>
-          <span class="category-tag temporary"> Temporary </span>
-          <p class="intake-date"> Jun 1 - Jun 3, 2026 </p>
+          <h3>{{ medicine.medicine_name }}</h3>
+          <p>{{ medicine.dosage }}</p>
+
+          <span
+            class="category-tag"
+            [class.temporary]="medicine.category === 'Temporary'"
+            [class.maintenance]="medicine.category === 'Maintenance'">
+            {{ medicine.category }}
+          </span>
+
+          <p class="intake-date">
+            {{ medicine.start_date | date:'mediumDate' }}
+            -
+            {{ medicine.end_date ? (medicine.end_date | date:'mediumDate') : 'Ongoing' }}
+          </p>
         </div>
 
-        <button class="menu-button">
-          <ion-icon name="ellipsis-vertical"></ion-icon>
-        </button>
+        <!-- QUICK ACTIONS -->
+        <div class="quick-actions-container" (click)="$event.stopPropagation()">
+
+          <button
+            class="menu-button"
+            type="button"
+            (click)="toggleMenu(medicine.id)">
+            <ion-icon name="ellipsis-vertical"></ion-icon>
+          </button>
+
+          <div
+            class="quick-actions-menu"
+            *ngIf="activeMenuId === medicine.id">
+
+            <button
+              type="button"
+              class="quick-action-item"
+              (click)="editMedicine(medicine.id)">
+              <ion-icon name="create-outline"></ion-icon>
+              <span>Edit Medicine</span>
+            </button>
+
+            <button
+              type="button"
+              class="quick-action-item delete-action"
+              (click)="deleteMedicine(medicine)">
+              <ion-icon name="trash-outline"></ion-icon>
+              <span>Delete Medicine</span>
+            </button>
+
+          </div>
+
+        </div>
+
       </div>
 
-      <!-- medicine 2 -->
-      <div class="medicine-card"
-           routerLink="/medicine-details"
-           style="cursor: pointer;">
-        <div class="medicine-image">
-          <ion-icon name="medkit-outline"></ion-icon>
-        </div>
-
-        <div class="medicine-info">
-          <h3> Cetirizine </h3>
-          <p> 10 mg </p>
-          <span class="category-tag maintenance"> Maintenance </span>
-          <p class="intake-date"> Jun 1 - Ongoing </p>
-        </div>
-
-        <button class="menu-button">
-          <ion-icon name="ellipsis-vertical"></ion-icon>
-        </button>
-      </div>
-
-      <!-- medicine 3 -->
-      <div class="medicine-card"
-           routerLink="/medicine-details"
-           style="cursor: pointer;">
-        <div class="medicine-image">
-          <ion-icon name="medkit-outline"></ion-icon>
-        </div>
-
-        <div class="medicine-info">
-          <h3> Vitamin D </h3>
-          <p> 1000 IU </p>
-          <span class="category-tag maintenance"> Maintenance </span>
-          <p class="intake-date"> Jun 1 - Ongoing </p>
-        </div>
-
-        <button class="menu-button">
-          <ion-icon name="ellipsis-vertical"></ion-icon>
-        </button>
+      <!-- EMPTY RECORDS MESSAGE -->
+      <div *ngIf="medicines.length === 0">
+        <p>No medicines recorded yet.</p>
       </div>
 
     </div>
 
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- BOTTOM NAVIGATION -->
   <div class="bottom-navigation">
 
     <div class="nav-item" routerLink="/dashboard">
       <ion-icon name="home-outline"></ion-icon>
-      <span> Home </span>
+      <span>Home</span>
     </div>
 
     <div class="nav-item active" routerLink="/records">
       <ion-icon name="document-text-outline"></ion-icon>
-      <span> Records </span>
+      <span>Records</span>
     </div>
 
     <div class="nav-item add-nav" routerLink="/add-medicine">
@@ -108,12 +127,12 @@
 
     <div class="nav-item" routerLink="/history">
       <ion-icon name="time-outline"></ion-icon>
-      <span> History </span>
+      <span>History</span>
     </div>
 
     <div class="nav-item" routerLink="/settings">
       <ion-icon name="settings-outline"></ion-icon>
-      <span> Settings </span>
+      <span>Settings</span>
     </div>
 
   </div>

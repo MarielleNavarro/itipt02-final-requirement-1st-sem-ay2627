@@ -250,3 +250,77 @@ ion-content {
 .bottom-navigation .nav-item {
   cursor: pointer;
 }
+
+
+/* QUICK ACTIONS MENU */
+.medicine-card {
+  position: relative;
+}
+
+.quick-actions-container {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.menu-button {
+  width: 32px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 20px;
+  }
+}
+
+.menu-button:active {
+  background: #f1ebfa;
+}
+
+.quick-actions-menu {
+  position: absolute;
+  top: 38px;
+  right: 0;
+  width: 170px;
+  background: #ffffff;
+  border: 1px solid #e8def3;
+  border-radius: 11px;
+  padding: 6px;
+  z-index: 20;
+  box-shadow: 0 5px 18px rgba(70, 45, 100, 0.16);
+}
+
+.quick-action-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 9px;
+  border: none;
+  background: transparent;
+  border-radius: 7px;
+  color: #50377d;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 17px;
+    color: #8056bd;
+  }
+}
+
+.quick-action-item:active {
+  background: #f5f0fc;
+}
+
+.quick-action-item.delete-action {
+  color: #dc6868;
+
+  ion-icon {
+    color: #dc6868;
+  }
+}

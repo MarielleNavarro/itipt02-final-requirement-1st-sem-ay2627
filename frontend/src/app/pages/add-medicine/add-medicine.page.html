@@ -5,15 +5,15 @@
     <!-- page header -->
     <div class="page-header">
       <ion-icon name="arrow-back-outline" routerLink="/dashboard"></ion-icon>
-      <h1> Add Medicine </h1>
+      <h1>Add Medicine</h1>
     </div>
 
     <!-- medicine image upload -->
     <div class="image-upload-section">
       <div class="image-upload-box">
         <ion-icon name="camera-outline"></ion-icon>
-        <p> Upload Medicine Image </p>
-        <span> Tap to choose from photos </span>
+        <p>Upload Medicine Image</p>
+        <span>Tap to choose from photos</span>
       </div>
     </div>
 
@@ -21,53 +21,82 @@
     <div class="medicine-form">
 
       <div class="form-group">
-        <label> Medicine Name </label>
-        <input type="text" placeholder="e.g. Paracetamol">
+        <label>Medicine Name</label>
+        <input
+          type="text"
+          placeholder="e.g. Paracetamol"
+          [(ngModel)]="medicineName">
       </div>
 
       <div class="form-group">
-        <label> Dosage </label>
-        <input type="text" placeholder="e.g. 20 mg">
+        <label>Dosage</label>
+        <input
+          type="text"
+          placeholder="e.g. 20 mg"
+          [(ngModel)]="dosage">
       </div>
 
       <div class="form-group">
-        <label> Category </label>
+        <label>Category</label>
         <div class="category-options">
-          <button type="button" class="category-button active">
+          <button
+            type="button"
+            class="category-button"
+            [class.active]="category === 'Maintenance'"
+            (click)="category = 'Maintenance'">
             Maintenance
           </button>
-          <button type="button" class="category-button">
+
+          <button
+            type="button"
+            class="category-button"
+            [class.active]="category === 'Temporary'"
+            (click)="category = 'Temporary'">
             Temporary
           </button>
         </div>
       </div>
 
       <div class="form-group">
-        <label> Reason for Taking </label>
-        <input type="text" placeholder="e.g. Fever">
+        <label>Reason for Taking</label>
+        <input
+          type="text"
+          placeholder="e.g. Fever"
+          [(ngModel)]="reason">
       </div>
 
       <div class="date-row">
         <div class="form-group">
-          <label> Start Date </label>
-          <input type="date">
+          <label>Start Date</label>
+          <input
+            type="date"
+            [(ngModel)]="startDate">
         </div>
 
         <div class="form-group">
-          <label> End Date </label>
-          <input type="date">
+          <label>End Date</label>
+          <input
+            type="date"
+            [(ngModel)]="endDate">
         </div>
       </div>
 
       <div class="form-group">
-        <label> Notes (Optional) </label>
-        <textarea rows="3" placeholder="Add notes here..."></textarea>
+        <label>Notes (Optional)</label>
+        <textarea
+          rows="3"
+          placeholder="Add notes here..."
+          [(ngModel)]="notes"></textarea>
       </div>
 
       <!-- save button -->
-      <button type="button" class="save-button"> Save Medicine </button>
+      <button
+        type="button"
+        class="save-button"
+        (click)="addMedicine()">
+        Save Medicine
+      </button>
 
     </div>
   </div>
-
 </ion-content>
