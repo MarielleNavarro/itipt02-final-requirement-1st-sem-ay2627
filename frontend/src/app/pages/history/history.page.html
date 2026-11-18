@@ -2,75 +2,105 @@
 <ion-content [fullscreen]="true">
   <div class="history-container">
 
-    <!-- page header -->
+    <!-- PAGE HEADER -->
     <div class="page-header">
-      <h1> Medicine History </h1>
+      <h1>Medicine History</h1>
     </div>
 
-    <!-- history filters -->
+    <!-- HISTORY FILTERS -->
     <div class="history-filters">
-      <button class="filter-button active"> All </button>
-      <button class="filter-button"> Ongoing </button>
-      <button class="filter-button"> Completed </button>
-    </div>
 
-    <!-- medicine history list -->
-    <div class="history-list">
+      <button
+        class="filter-button"
+        [class.active]="selectedFilter === 'All'"
+        (click)="setFilter('All')">
+        All
+      </button>
 
-      <div class="history-card">
-        <div class="medicine-image">
-          <ion-icon name="medkit-outline"></ion-icon>
-        </div>
-        <div class="history-info">
-          <h3> Paracetamol </h3>
-          <p> 10 mg </p>
-          <span class="history-date"> Jun 1 - Jun 3, 2026 </span>
-        </div>
-        <span class="status-badge completed"> Completed </span>
-      </div>
+      <button
+        class="filter-button"
+        [class.active]="selectedFilter === 'Ongoing'"
+        (click)="setFilter('Ongoing')">
+        Ongoing
+      </button>
 
-      <div class="history-card">
-        <div class="medicine-image">
-          <ion-icon name="medkit-outline"></ion-icon>
-        </div>
-        <div class="history-info">
-          <h3> Cetirizine </h3>
-          <p> 10 mg </p>
-          <span class="history-date"> Jun 1 - Ongoing </span>
-        </div>
-        <span class="status-badge ongoing"> Ongoing </span>
-      </div>
-
-      <div class="history-card">
-        <div class="medicine-image">
-          <ion-icon name="medkit-outline"></ion-icon>
-        </div>
-        <div class="history-info">
-          <h3> Vitamin D </h3>
-          <p> 1000 IU </p>
-          <span class="history-date"> Jun 1 - Ongoing </span>
-        </div>
-        <span class="status-badge ongoing"> Ongoing </span>
-      </div>
+      <button
+        class="filter-button"
+        [class.active]="selectedFilter === 'Completed'"
+        (click)="setFilter('Completed')">
+        Completed
+      </button>
 
     </div>
+
+    <!-- LOADING -->
+    <div *ngIf="isLoading">
+      <p>Loading medicine history...</p>
+    </div>
+
+    <!-- ERROR -->
+    <div *ngIf="!isLoading && errorMessage">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- EMPTY HISTORY -->
+    <div *ngIf="!isLoading && !errorMessage && filteredMedicines.length === 0">
+      <p>No medicine history found.</p>
+    </div>
+
+    <!-- MEDICINE HISTORY LIST -->
+    <div class="history-list" *ngIf="!isLoading && !errorMessage">
+
+      <div
+        class="history-card"
+        *ngFor="let medicine of filteredMedicines">
+
+        <div class="medicine-image">
+          <ion-icon name="medkit-outline"></ion-icon>
+        </div>
+
+        <div class="history-info">
+          <h3>{{ medicine.medicine_name }}</h3>
+
+          <p>{{ medicine.dosage }}</p>
+
+          <span class="history-date">
+            {{ medicine.start_date | date:'MMM d, yyyy' }}
+            -
+            {{ medicine.end_date
+              ? (medicine.end_date | date:'MMM d, yyyy')
+              : 'Ongoing' }}
+          </span>
+        </div>
+
+        <span
+          class="status-badge"
+          [class.ongoing]="getMedicineStatus(medicine) === 'Ongoing'"
+          [class.completed]="getMedicineStatus(medicine) === 'Completed'">
+          {{ getMedicineStatus(medicine) }}
+        </span>
+
+      </div>
+
+    </div>
+
   </div>
 
-  <!-- bottom navigation -->
+  <!-- BOTTOM NAVIGATION -->
   <div class="bottom-navigation">
 
     <div class="nav-item"
          routerLink="/dashboard"
          style="cursor: pointer;">
       <ion-icon name="home-outline"></ion-icon>
-      <span> Home </span>
+      <span>Home</span>
     </div>
 
     <div class="nav-item"
          routerLink="/records"
          style="cursor: pointer;">
       <ion-icon name="document-text-outline"></ion-icon>
-      <span> Records </span>
+      <span>Records</span>
     </div>
 
     <div class="nav-item add-nav"
@@ -85,14 +115,14 @@
          routerLink="/history"
          style="cursor: pointer;">
       <ion-icon name="time-outline"></ion-icon>
-      <span> History </span>
+      <span>History</span>
     </div>
 
     <div class="nav-item"
          routerLink="/settings"
          style="cursor: pointer;">
       <ion-icon name="settings-outline"></ion-icon>
-      <span> Settings </span>
+      <span>Settings</span>
     </div>
 
   </div>

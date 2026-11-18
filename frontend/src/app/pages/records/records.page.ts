@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { IonContent, IonIcon, AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
@@ -21,11 +22,15 @@ import { Medicine, MedicineService } from '../../services/medicine.service';
   selector: 'app-records',
   templateUrl: './records.page.html',
   styleUrls: ['./records.page.scss'],
-  imports: [CommonModule, RouterLink, IonContent, IonIcon],
+  imports: [CommonModule, FormsModule, RouterLink, IonContent, IonIcon],
 })
-export class RecordsPage implements OnInit {
+export class RecordsPage {
 
   medicines: Medicine[] = [];
+
+  searchTerm: string = '';
+  selectedCategory: string = 'All';
+
   isLoading = true;
   errorMessage = '';
   activeMenuId: number | null = null;
@@ -50,7 +55,7 @@ export class RecordsPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.loadMedicines();
   }
 
@@ -78,6 +83,26 @@ export class RecordsPage implements OnInit {
     });
   }
 
+    // SELECT CATEGORY FILTER
+  setCategory(category: string) {
+    this.selectedCategory = category;
+  }
+
+  // FILTER AND SEARCH MEDICINES
+  get filteredMedicines(): Medicine[] {
+    return this.medicines.filter(medicine => {
+      const matchesCategory =
+        this.selectedCategory === 'All' ||
+        medicine.category === this.selectedCategory;
+
+      const matchesSearch =
+        medicine.medicine_name
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase().trim());
+
+      return matchesCategory && matchesSearch;
+    });
+  }
 
   // OPEN OR CLOSE QUICK ACTIONS MENU
   toggleMenu(medicineId: number) {

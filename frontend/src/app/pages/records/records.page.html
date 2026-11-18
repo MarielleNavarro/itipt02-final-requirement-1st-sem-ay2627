@@ -10,14 +10,34 @@
     <!-- SEARCH BAR -->
     <div class="search-box">
       <ion-icon name="search-outline"></ion-icon>
-      <input type="text" placeholder="Search medicine...">
+      <input 
+        type="text" 
+        placeholder="Search medicine..."
+        [(ngModel)]="searchTerm">
     </div>
 
     <!-- CATEGORY FILTERS -->
     <div class="category-filters">
-      <button class="filter-button active">All</button>
-      <button class="filter-button">Maintenance</button>
-      <button class="filter-button">Temporary</button>
+      <button 
+        class="filter-button"
+        [class.active]="selectedCategory === 'All'"
+        (click)="setCategory('All')">
+        All
+      </button>
+
+      <button 
+        class="filter-button"
+        [class.active]="selectedCategory === 'Maintenance'"
+        (click)="setCategory('Maintenance')">
+        Maintenance
+      </button>
+
+      <button 
+        class="filter-button"
+        [class.active]="selectedCategory === 'Temporary'"
+        (click)="setCategory('Temporary')">
+        Temporary
+      </button>
     </div>
 
     <!-- LOADING MESSAGE -->
@@ -35,7 +55,7 @@
 
       <div
         class="medicine-card"
-        *ngFor="let medicine of medicines"
+        *ngFor="let medicine of filteredMedicines"
         (click)="openMedicineDetails(medicine.id)"
         style="cursor: pointer;">
 
@@ -98,8 +118,8 @@
       </div>
 
       <!-- EMPTY RECORDS MESSAGE -->
-      <div *ngIf="medicines.length === 0">
-        <p>No medicines recorded yet.</p>
+      <div *ngIf="filteredMedicines.length === 0">
+        <p>No medicines found.</p>
       </div>
 
     </div>

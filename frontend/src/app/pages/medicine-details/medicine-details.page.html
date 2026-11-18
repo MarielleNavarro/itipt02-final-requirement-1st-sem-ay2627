@@ -39,7 +39,8 @@
 
         <span
           class="category-tag"
-          [class.temporary]="medicine.category === 'Temporary'">
+          [class.temporary]="medicine.category === 'Temporary'"
+          [class.maintenance]="medicine.category === 'Maintenance'">
           {{ medicine.category }}
         </span>
       </div>
