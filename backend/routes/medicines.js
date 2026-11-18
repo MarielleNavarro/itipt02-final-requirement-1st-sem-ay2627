@@ -31,8 +31,11 @@ function authenticateToken(req, res, next) {
 router.use(authenticateToken);
 
 
+
 // ADD MEDICINE
 router.post('/', async (req, res) => {
+  const connection = db.promise();
+
   try {
     const {
       medicine_name,
@@ -42,7 +45,8 @@ router.post('/', async (req, res) => {
       start_date,
       end_date,
       image,
-      notes
+      notes,
+      intake_times
     } = req.body;
 
     if (!medicine_name || !dosage || !category || !reason || !start_date) {
@@ -57,7 +61,30 @@ router.post('/', async (req, res) => {
       });
     }
 
-    const [result] = await db.promise().query(
+    // VALIDATE INTAKE SCHEDULES
+    if (!Array.isArray(intake_times) || intake_times.length === 0) {
+      return res.status(400).json({
+        message: 'Please add at least one intake schedule.'
+      });
+    }
+
+    const validTimeFormat = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+    if (!intake_times.every(time =>
+      typeof time === 'string' && validTimeFormat.test(time)
+    )) {
+      return res.status(400).json({
+        message: 'Invalid intake schedule time.'
+      });
+    }
+
+    const uniqueIntakeTimes = [...new Set(intake_times)];
+
+    // START DATABASE TRANSACTION
+    await connection.beginTransaction();
+
+    // SAVE MEDICINE
+    const [result] = await connection.query(
       `INSERT INTO medicines
       (user_id, medicine_name, dosage, category, reason,
        start_date, end_date, image, notes)
@@ -75,19 +102,41 @@ router.post('/', async (req, res) => {
       ]
     );
 
+    const medicineId = result.insertId;
+
+    // SAVE INTAKE SCHEDULES
+    for (const time of uniqueIntakeTimes) {
+      await connection.query(
+        `INSERT INTO medicine_schedules
+        (user_id, medicine_id, intake_time)
+        VALUES (?, ?, ?)`,
+        [
+          req.user.id,
+          medicineId,
+          `${time}:00`
+        ]
+      );
+    }
+
+    // SAVE ALL CHANGES
+    await connection.commit();
+
     res.status(201).json({
-      message: 'Medicine added successfully!',
-      medicineId: result.insertId
+      message: 'Medicine and intake schedules added successfully!',
+      medicineId: medicineId
     });
 
   } catch (error) {
+    await connection.rollback();
+
     console.error('Add medicine error:', error);
 
     res.status(500).json({
-      message: 'Failed to add medicine.'
+      message: 'Failed to add medicine and intake schedules.'
     });
   }
 });
+
 
 
 // VIEW ALL MEDICINES

@@ -5,8 +5,20 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { AlertController, IonContent, IonIcon } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { arrowBackOutline, cameraOutline } from 'ionicons/icons';
+import {
+  arrowBackOutline,
+  cameraOutline,
+  trashOutline,
+  addCircleOutline
+} from 'ionicons/icons';
+
 import { MedicineService } from '../../services/medicine.service';
+
+interface IntakeTime {
+  hour: string;
+  minute: string;
+  period: 'AM' | 'PM';
+}
 
 @Component({
   selector: 'app-add-medicine',
@@ -23,12 +35,27 @@ import { MedicineService } from '../../services/medicine.service';
 export class AddMedicinePage {
 
   medicineName = '';
-  dosage = '';
+
+  dosageAmount = '';
+  dosageUnit = 'mg';
+  customDosageUnit = '';
+
   category = 'Maintenance';
   reason = '';
   startDate = '';
   endDate = '';
   notes = '';
+
+  intakeTimes: IntakeTime[] = [
+    { hour: '8', minute: '00', period: 'AM' }
+  ];
+
+  hours: string[] = Array.from(
+    { length: 12 },
+    (_, i) => String(i + 1)
+  );
+
+  minutes: string[] = ['00', '10', '20', '30', '40', '50'];
 
   constructor(
     private medicineService: MedicineService,
@@ -37,29 +64,100 @@ export class AddMedicinePage {
   ) {
     addIcons({
       arrowBackOutline,
-      cameraOutline
+      cameraOutline,
+      trashOutline,
+      addCircleOutline
     });
+  }
+
+  addIntakeTime() {
+    this.intakeTimes.push({
+      hour: '8',
+      minute: '00',
+      period: 'AM'
+    });
+  }
+
+  removeIntakeTime(index: number) {
+    if (this.intakeTimes.length > 1) {
+      this.intakeTimes.splice(index, 1);
+    }
+  }
+
+  getFormattedIntakeTimes(): string[] {
+    return this.intakeTimes.map(schedule => {
+
+      let hour = Number(schedule.hour);
+
+      if (schedule.period === 'AM' && hour === 12) {
+        hour = 0;
+      } else if (schedule.period === 'PM' && hour !== 12) {
+        hour += 12;
+      }
+
+      return `${String(hour).padStart(2, '0')}:${schedule.minute}`;
+    });
+  }
+
+  async showValidationAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Incomplete Information',
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
   async addMedicine() {
 
-    if (
-      !this.medicineName.trim() ||
-      !this.dosage.trim() ||
-      !this.category ||
-      !this.reason.trim() ||
-      !this.startDate
-    ) {
-      const alert = await this.alertController.create({
-        header: 'Incomplete Information',
-        message: 'Please fill in all required fields.',
-        buttons: ['OK']
-      });
-
-      await alert.present();
+    // Medicine Name validation
+    if (!this.medicineName.trim()) {
+      await this.showValidationAlert('Please enter the Medicine Name.');
       return;
-    } 
+    }
 
+    // Dosage validation
+    if (
+      !String(this.dosageAmount).trim() ||
+      !Number.isFinite(Number(this.dosageAmount)) ||
+      Number(this.dosageAmount) <= 0
+    ) {
+      await this.showValidationAlert('Please enter a valid Dosage.');
+      return;
+    }
+
+    // Dosage Unit validation
+    if (!this.dosageUnit) {
+      await this.showValidationAlert('Please select a Dosage Unit.');
+      return;
+    }
+
+    // Custom Dosage Unit validation
+    if (this.dosageUnit === 'Other' && !this.customDosageUnit.trim()) {
+      await this.showValidationAlert('Please enter your custom Dosage Unit.');
+      return;
+    }
+
+    // Category validation
+    if (!this.category) {
+      await this.showValidationAlert('Please select a Category.');
+      return;
+    }
+
+    // Reason validation
+    if (!this.reason.trim()) {
+      await this.showValidationAlert('Please enter the Reason for Taking.');
+      return;
+    }
+
+    // Start Date validation
+    if (!this.startDate) {
+      await this.showValidationAlert('Please select a Start Date.');
+      return;
+    }
+
+    // End Date validation (optional)
     if (this.endDate && this.endDate < this.startDate) {
       const alert = await this.alertController.create({
         header: 'Invalid Date',
@@ -71,18 +169,26 @@ export class AddMedicinePage {
       return;
     }
 
+    // Prepare medicine data
+    const selectedUnit = this.dosageUnit === 'Other'
+      ? this.customDosageUnit.trim()
+      : this.dosageUnit;
+
     const medicineData = {
       medicine_name: this.medicineName.trim(),
-      dosage: this.dosage.trim(),
+      dosage: `${String(this.dosageAmount).trim()} ${selectedUnit}`,
       category: this.category,
       reason: this.reason.trim(),
       start_date: this.startDate,
       end_date: this.endDate || null,
       image: null,
-      notes: this.notes.trim() || null
+      notes: this.notes.trim() || null,
+      intake_times: this.getFormattedIntakeTimes()
     };
 
+    // Save medicine
     this.medicineService.addMedicine(medicineData).subscribe({
+
       next: async (response) => {
 
         const alert = await this.alertController.create({
@@ -111,8 +217,8 @@ export class AddMedicinePage {
 
         await alert.present();
       }
-    });
 
+    });
   }
 
 }

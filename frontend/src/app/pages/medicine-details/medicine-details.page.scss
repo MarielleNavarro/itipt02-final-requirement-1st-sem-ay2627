@@ -6,9 +6,9 @@ ion-content {
 /* MAIN CONTAINER */
 .details-container {
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 18px 17px 40px;
+  max-width: none;
+  margin: 0;
+  padding: 18px 22px 40px;
   box-sizing: border-box;
 }
 
@@ -41,7 +41,7 @@ ion-content {
 
 .medicine-image {
   width: 100%;
-  max-width: 380px;
+  max-width: 490px;
   height: 210px;
   display: flex;
   justify-content: center;
@@ -93,7 +93,9 @@ ion-content {
 
 /* MEDICINE INFORMATION */
 .details-card {
+  width: 100%;
   padding: 17px;
+  box-sizing: border-box;
   background: #ffffff;
   border: 1px solid #e8def3;
   border-radius: 13px;
@@ -138,9 +140,12 @@ ion-content {
   padding-top: 15px;
 }
 
-
 /* SMALL SCREEN ADJUSTMENT */
 @media (max-width: 400px) {
+  .details-container {
+    padding: 18px 17px 30px;
+  }
+
   .medicine-image {
     height: 180px;
   }
@@ -152,15 +157,8 @@ ion-content {
   .details-card {
     padding: 14px;
   }
-}
 
-/* LAPTOP SCREEN ADJUSTMENT */
-@media (min-width: 768px) {
-  .details-container {
-    max-width: 900px;
-  }
-
-  .page-header {
-    max-width: 900px;
+  .detail-row {
+    grid-template-columns: 1fr;
   }
 }

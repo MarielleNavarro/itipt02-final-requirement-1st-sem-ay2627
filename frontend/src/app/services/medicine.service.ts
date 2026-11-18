@@ -30,6 +30,7 @@ export interface MedicineInput {
   end_date?: string | null;
   image?: string | null;
   notes?: string | null;
+  intake_times: string[];
 }
 
 // ADD MEDICINE RESPONSE

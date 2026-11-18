@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
@@ -16,7 +16,7 @@ import { Medicine, MedicineService } from '../../services/medicine.service';
   styleUrls: ['./medicine-details.page.scss'],
   imports: [CommonModule, RouterLink, IonContent, IonIcon],
 })
-export class MedicineDetailsPage implements OnInit {
+export class MedicineDetailsPage {
 
   medicineId!: number;
   medicine: Medicine | null = null;
@@ -34,13 +34,16 @@ export class MedicineDetailsPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  // RELOAD DETAILS EVERY TIME THE PAGE OPENS
+  ionViewWillEnter() {
     this.medicineId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadMedicine();
   }
 
+  // LOAD LATEST MEDICINE INFORMATION
   loadMedicine() {
     this.isLoading = true;
+    this.errorMessage = '';
     this.cdr.detectChanges();
 
     this.medicineService.getMedicine(this.medicineId).subscribe({
@@ -49,6 +52,7 @@ export class MedicineDetailsPage implements OnInit {
         this.isLoading = false;
         this.cdr.detectChanges();
       },
+
       error: (error) => {
         console.error('Error loading medicine details:', error);
 

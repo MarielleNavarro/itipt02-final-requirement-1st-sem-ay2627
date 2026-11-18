@@ -24,9 +24,20 @@ export class EditMedicinePage implements OnInit {
   reason = '';
   startDate = '';
   endDate = '';
-  notes = '';
 
+  notes = '';
   isLoading = true;
+
+  // ORIGINAL MEDICINE VALUES
+  originalValues = {
+    medicineName: '',
+    dosage: '',
+    category: '',
+    reason: '',
+    startDate: '',
+    endDate: '',
+    notes: ''
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +55,19 @@ export class EditMedicinePage implements OnInit {
   ngOnInit() {
     this.medicineId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadMedicine();
+  }
+
+  // CHECK IF THERE ARE CHANGES
+  get hasChanges(): boolean {
+    return (
+      this.medicineName.trim() !== this.originalValues.medicineName ||
+      this.dosage.trim() !== this.originalValues.dosage ||
+      this.category !== this.originalValues.category ||
+      this.reason.trim() !== this.originalValues.reason ||
+      this.startDate !== this.originalValues.startDate ||
+      this.endDate !== this.originalValues.endDate ||
+      this.notes.trim() !== this.originalValues.notes
+    );
   }
 
   // CONVERT DATE FOR INPUT
@@ -77,6 +101,17 @@ export class EditMedicinePage implements OnInit {
         this.startDate = this.formatDateForInput(this.medicine.start_date);
         this.endDate = this.formatDateForInput(this.medicine.end_date);
         this.notes = this.medicine.notes || '';
+
+        // SAVE ORIGINAL VALUES FOR COMPARISON
+        this.originalValues = {
+          medicineName: this.medicineName.trim(),
+          dosage: this.dosage.trim(),
+          category: this.category,
+          reason: this.reason.trim(),
+          startDate: this.startDate,
+          endDate: this.endDate,
+          notes: this.notes.trim()
+        };
 
         this.isLoading = false;
         this.cdr.detectChanges();

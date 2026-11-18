@@ -109,8 +109,10 @@
       <button
         type="button"
         class="save-button"
+        [disabled]="!hasChanges"
+        [class.disabled]="!hasChanges"
         (click)="updateMedicine()"
-        style="cursor: pointer;">
+        [style.cursor]="hasChanges ? 'pointer' : 'not-allowed'">
         Update Medicine
       </button>
 

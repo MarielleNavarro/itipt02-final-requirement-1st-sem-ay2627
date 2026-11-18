@@ -6,9 +6,9 @@ ion-content {
 /* main container */
 .edit-medicine-container {
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 18px 17px 30px;
+  max-width: none;
+  margin: 0;
+  padding: 18px 22px 30px;
   box-sizing: border-box;
 }
 
@@ -42,7 +42,7 @@ ion-content {
 
 .image-upload-box {
   width: 100%;
-  max-width: 380px;
+  max-width: 490px;
   height: 150px;
   display: flex;
   flex-direction: column;
@@ -74,12 +74,14 @@ ion-content {
 
 /* medicine form */
 .medicine-form {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 17px;
 }
 
 .form-group {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -93,6 +95,7 @@ ion-content {
   input,
   textarea {
     width: 100%;
+    min-height: 44px;
     padding: 12px 13px;
     box-sizing: border-box;
     background: #ffffff;
@@ -121,13 +124,14 @@ ion-content {
 
   .category-button {
     flex: 1;
-    height: 42px;
+    height: 53px;
     border: 1px solid #e8def3;
-    border-radius: 9px;
+    border-radius: 12px;
     background: #ffffff;
     color: #806a9d;
     font-size: 13px;
     font-weight: 600;
+    cursor: pointer;
   }
 
   .category-button.active {
@@ -139,15 +143,16 @@ ion-content {
 
 /* date fields */
 .date-row {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 15px;
 }
 
 /* update button */
 .save-button {
   width: 100%;
-  height: 46px;
+  min-height: 46px;
   margin-top: 5px;
   border: none;
   border-radius: 10px;
@@ -155,10 +160,15 @@ ion-content {
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
+  cursor: pointer;
 }
 
 /* small screen adjustment */
 @media (max-width: 400px) {
+  .edit-medicine-container {
+    padding: 18px 17px 30px;
+  }
+
   .date-row {
     grid-template-columns: 1fr;
   }

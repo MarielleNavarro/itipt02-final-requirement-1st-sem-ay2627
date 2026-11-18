@@ -1,3 +1,4 @@
+
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -83,9 +84,10 @@ export class RecordsPage {
     });
   }
 
-    // SELECT CATEGORY FILTER
+  // SELECT CATEGORY FILTER
   setCategory(category: string) {
     this.selectedCategory = category;
+    this.cdr.detectChanges();
   }
 
   // FILTER AND SEARCH MEDICINES
@@ -108,6 +110,8 @@ export class RecordsPage {
   toggleMenu(medicineId: number) {
     this.activeMenuId =
       this.activeMenuId === medicineId ? null : medicineId;
+
+    this.cdr.detectChanges();
   }
 
   // OPEN MEDICINE DETAILS PAGE
@@ -125,6 +129,7 @@ export class RecordsPage {
   // DELETE MEDICINE WITH CONFIRMATION
   async deleteMedicine(medicine: Medicine) {
     this.activeMenuId = null;
+    this.cdr.detectChanges();
 
     const alert = await this.alertController.create({
       header: 'Delete Medicine',
@@ -140,18 +145,34 @@ export class RecordsPage {
           handler: () => {
             this.medicineService.deleteMedicine(medicine.id).subscribe({
               next: async () => {
+
+                // REMOVE DELETED MEDICINE FROM THE LIST
                 this.medicines = this.medicines.filter(
                   item => item.id !== medicine.id
                 );
 
+                this.activeMenuId = null;
+
+                // UPDATE RECORDS PAGE IMMEDIATELY
+                this.cdr.detectChanges();
+
+                // SHOW SUCCESS ALERT
                 const successAlert = await this.alertController.create({
                   header: 'Success',
                   message: 'Medicine deleted successfully!',
-                  buttons: ['OK']
+                  buttons: [
+                    {
+                      text: 'OK',
+                      handler: () => {
+                        this.cdr.detectChanges();
+                      }
+                    }
+                  ]
                 });
 
                 await successAlert.present();
               },
+
               error: async (error) => {
                 console.error('Error deleting medicine:', error);
 
