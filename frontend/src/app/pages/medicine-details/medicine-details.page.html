@@ -29,7 +29,17 @@
       <!-- MEDICINE IMAGE -->
       <div class="medicine-image-section">
         <div class="medicine-image">
-          <ion-icon name="medkit-outline"></ion-icon>
+
+          <img
+            *ngIf="medicine.image; else defaultDetailsMedicineIcon"
+            [src]="getMedicineImage(medicine.image)"
+            [alt]="medicine.medicine_name"
+          />
+
+          <ng-template #defaultDetailsMedicineIcon>
+            <ion-icon name="medkit-outline"></ion-icon>
+          </ng-template>
+
         </div>
       </div>
 

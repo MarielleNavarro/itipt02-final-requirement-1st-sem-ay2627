@@ -10,11 +10,41 @@
 
     <!-- medicine image upload -->
     <div class="image-upload-section">
-      <div class="image-upload-box">
-        <ion-icon name="camera-outline"></ion-icon>
-        <p>Upload Medicine Image</p>
-        <span>Tap to choose from photos</span>
+
+      <!-- HIDDEN IMAGE INPUT -->
+      <input
+        #imageInput
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        hidden
+        (change)="onImageSelected($event)"
+      />
+
+      <!-- IMAGE PREVIEW -->
+      <div
+        class="image-upload-box"
+        (click)="imageInput.click()"
+      >
+
+        <ng-container *ngIf="imagePreview; else uploadPrompt">
+          <img
+            [src]="imagePreview"
+            alt="Medicine Preview"
+            class="medicine-image-preview"
+          />
+
+          <p>Change Medicine Image</p>
+          <span>Tap to choose another photo</span>
+        </ng-container>
+
+        <ng-template #uploadPrompt>
+          <ion-icon name="camera-outline"></ion-icon>
+          <p>Upload Medicine Image</p>
+          <span>Tap to choose from photos</span>
+        </ng-template>
+
       </div>
+
     </div>
 
     <!-- medicine form -->

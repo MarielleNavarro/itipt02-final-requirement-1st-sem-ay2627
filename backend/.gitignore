@@ -3,3 +3,7 @@ node_modules/
 
 # Environment variables
 .env
+
+# Uploaded medicine images
+uploads/*
+!uploads/.gitkeep 

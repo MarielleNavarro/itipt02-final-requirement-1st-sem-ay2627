@@ -34,6 +34,9 @@ interface IntakeTime {
 })
 export class AddMedicinePage {
 
+  selectedImage: File | null = null;
+  imagePreview: string | null = null;
+
   medicineName = '';
 
   dosageAmount = '';
@@ -68,6 +71,42 @@ export class AddMedicinePage {
       trashOutline,
       addCircleOutline
     });
+  }
+
+  // SELECT MEDICINE IMAGE
+  async onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    // CHECK IMAGE FILE TYPE
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+    if (!allowedTypes.includes(file.type)) {
+      await this.showValidationAlert(
+        'Please select a JPG, JPEG, PNG, or WEBP image.'
+      );
+
+      input.value = '';
+      return;
+    }
+
+    // CHECK IMAGE FILE SIZE (5MB MAX)
+    if (file.size > 5 * 1024 * 1024) {
+      await this.showValidationAlert(
+        'Image size must not exceed 5MB.'
+      );
+
+      input.value = '';
+      return;
+    }
+
+    // SAVE SELECTED IMAGE AND SHOW PREVIEW
+    this.selectedImage = file;
+    this.imagePreview = URL.createObjectURL(file);
   }
 
   addIntakeTime() {
@@ -187,7 +226,10 @@ export class AddMedicinePage {
     };
 
     // Save medicine
-    this.medicineService.addMedicine(medicineData).subscribe({
+    this.medicineService.addMedicine(
+      medicineData,
+      this.selectedImage
+    ).subscribe({
 
       next: async (response) => {
 

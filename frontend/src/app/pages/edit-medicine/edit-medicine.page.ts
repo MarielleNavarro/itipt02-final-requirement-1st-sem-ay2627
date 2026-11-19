@@ -28,6 +28,10 @@ export class EditMedicinePage implements OnInit {
   notes = '';
   isLoading = true;
 
+  // MEDICINE IMAGE
+  selectedImage: File | null = null;
+  imagePreview: string | null = null;
+
   // ORIGINAL MEDICINE VALUES
   originalValues = {
     medicineName: '',
@@ -66,7 +70,8 @@ export class EditMedicinePage implements OnInit {
       this.reason.trim() !== this.originalValues.reason ||
       this.startDate !== this.originalValues.startDate ||
       this.endDate !== this.originalValues.endDate ||
-      this.notes.trim() !== this.originalValues.notes
+      this.notes.trim() !== this.originalValues.notes ||
+      this.selectedImage !== null
     );
   }
 
@@ -93,6 +98,11 @@ export class EditMedicinePage implements OnInit {
     this.medicineService.getMedicine(this.medicineId).subscribe({
       next: (response) => {
         this.medicine = response.medicine;
+
+        // LOAD EXISTING MEDICINE IMAGE
+        this.imagePreview = this.medicine.image
+          ? this.medicineService.getImageUrl(this.medicine.image)
+          : null;
 
         this.medicineName = this.medicine.medicine_name;
         this.dosage = this.medicine.dosage;
@@ -137,6 +147,49 @@ export class EditMedicinePage implements OnInit {
     });
   }
 
+  // GET MEDICINE IMAGE URL
+  getMedicineImage(image: string | null): string | null {
+    return this.medicineService.getImageUrl(image);
+  }
+
+  // SELECT NEW MEDICINE IMAGE
+  async onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    // CHECK IMAGE FILE TYPE
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+    if (!allowedTypes.includes(file.type)) {
+      await this.showAlert(
+        'Invalid Image',
+        'Please select a JPG, JPEG, PNG, or WEBP image.'
+      );
+
+      input.value = '';
+      return;
+    }
+
+    // CHECK IMAGE FILE SIZE (5MB MAX)
+    if (file.size > 5 * 1024 * 1024) {
+      await this.showAlert(
+        'Image Too Large',
+        'Image size must not exceed 5MB.'
+      );
+
+      input.value = '';
+      return;
+    }
+
+    // SAVE NEW IMAGE AND SHOW PREVIEW
+    this.selectedImage = file;
+    this.imagePreview = URL.createObjectURL(file);
+  }
+
   // UPDATE MEDICINE
   updateMedicine() {
     if (
@@ -169,7 +222,11 @@ export class EditMedicinePage implements OnInit {
       notes: this.notes.trim() || null
     };
 
-    this.medicineService.updateMedicine(this.medicineId, updatedData).subscribe({
+    this.medicineService.updateMedicine(
+      this.medicineId,
+      updatedData,
+      this.selectedImage
+    ).subscribe({
       next: async () => {
         const alert = await this.alertController.create({
           header: 'Success',

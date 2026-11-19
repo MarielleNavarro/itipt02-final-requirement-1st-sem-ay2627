@@ -65,4 +65,9 @@ export class MedicineDetailsPage {
     });
   }
 
+  // GET MEDICINE IMAGE URL
+  getMedicineImage(image: string | null): string | null {
+    return this.medicineService.getImageUrl(image);
+  }
+
 }

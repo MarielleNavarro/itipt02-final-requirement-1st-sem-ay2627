@@ -29,6 +29,11 @@ export class RecordsPage {
 
   medicines: Medicine[] = [];
 
+  // GET MEDICINE IMAGE URL
+  getMedicineImage(image: string | null): string | null {
+    return this.medicineService.getImageUrl(image);
+  }
+
   searchTerm: string = '';
   selectedCategory: string = 'All';
   selectedStatus: string = 'All';

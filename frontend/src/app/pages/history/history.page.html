@@ -56,7 +56,15 @@
         *ngFor="let medicine of filteredMedicines">
 
         <div class="medicine-image">
-          <ion-icon name="medkit-outline"></ion-icon>
+          <img
+            *ngIf="medicine.image; else defaultHistoryMedicineIcon"
+            [src]="getMedicineImage(medicine.image)"
+            [alt]="medicine.medicine_name"
+          />
+
+          <ng-template #defaultHistoryMedicineIcon>
+            <ion-icon name="medkit-outline"></ion-icon>
+          </ng-template>
         </div>
 
         <div class="history-info">

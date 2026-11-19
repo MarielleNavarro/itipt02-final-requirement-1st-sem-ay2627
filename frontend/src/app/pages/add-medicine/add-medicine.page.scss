@@ -72,6 +72,16 @@ ion-content {
   }
 }
 
+// medicine image preview
+.medicine-image-preview {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border: 2px solid #d8c9ef;
+}
+
 // medicine form
 .medicine-form {
   display: flex;

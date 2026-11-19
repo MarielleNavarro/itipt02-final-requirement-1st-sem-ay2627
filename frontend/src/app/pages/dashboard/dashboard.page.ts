@@ -151,6 +151,11 @@ export class DashboardPage {
     return endDate < today ? 'Completed' : 'Ongoing';
   }
 
+  // GET MEDICINE IMAGE URL
+  getMedicineImage(image: string | null): string | null {
+    return this.medicineService.getImageUrl(image);
+  }
+
   // GET TODAY'S DATE
   getTodayDate(): string {
     const today = new Date();

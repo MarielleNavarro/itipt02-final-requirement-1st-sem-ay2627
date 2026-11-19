@@ -50,6 +50,7 @@ export interface TodaySchedule {
   medicine_id: number;
   medicine_name: string;
   dosage: string;
+  image: string | null;
   intake_time: string;
   status: 'Taken' | 'Missed' | 'Skipped' | null;
 }
@@ -78,6 +79,17 @@ export class MedicineService {
 
   private apiUrl = `${environment.apiUrl}/medicines`;
 
+  // GET FULL MEDICINE IMAGE URL
+  getImageUrl(image: string | null): string | null {
+    if (!image) {
+      return null;
+    }
+
+    const baseUrl = environment.apiUrl.replace('/api', '');
+
+    return `${baseUrl}${image}`;
+  }
+
   constructor(
     private http: HttpClient,
     private authService: AuthService
@@ -93,13 +105,33 @@ export class MedicineService {
   }
 
   // ADD MEDICINE
-  addMedicine(data: MedicineInput): Observable<AddMedicineResponse> {
+  addMedicine(
+    data: MedicineInput,
+    imageFile?: File | null
+  ): Observable<AddMedicineResponse> {
+
+    const formData = new FormData();
+
+    formData.append('medicine_name', data.medicine_name);
+    formData.append('dosage', data.dosage);
+    formData.append('category', data.category);
+    formData.append('reason', data.reason);
+    formData.append('start_date', data.start_date);
+    formData.append('end_date', data.end_date || '');
+    formData.append('notes', data.notes || '');
+    formData.append('intake_times', JSON.stringify(data.intake_times));
+
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+
     return this.http.post<AddMedicineResponse>(
       this.apiUrl,
-      data,
+      formData,
       { headers: this.getHeaders() }
     );
   }
+
 
   // VIEW ALL MEDICINES
   getMedicines(): Observable<MedicinesResponse> {
@@ -108,6 +140,7 @@ export class MedicineService {
       { headers: this.getHeaders() }
     );
   }
+
 
   // VIEW TODAY'S MEDICINE SCHEDULES
   getTodaySchedules(): Observable<TodaySchedulesResponse> {
@@ -128,11 +161,29 @@ export class MedicineService {
   // EDIT MEDICINE
   updateMedicine(
     id: number,
-    data: Partial<MedicineInput>
+    data: Partial<MedicineInput>,
+    imageFile?: File | null
   ): Observable<MedicineActionResponse> {
+
+    const formData = new FormData();
+
+    formData.append('medicine_name', data.medicine_name || '');
+    formData.append('dosage', data.dosage || '');
+    formData.append('category', data.category || '');
+    formData.append('reason', data.reason || '');
+    formData.append('start_date', data.start_date || '');
+    formData.append('end_date', data.end_date || '');
+    formData.append('notes', data.notes || '');
+
+    if (imageFile) {
+      formData.append('image', imageFile);
+    } else {
+      formData.append('image', data.image || '');
+    }
+
     return this.http.put<MedicineActionResponse>(
       `${this.apiUrl}/${id}`,
-      data,
+      formData,
       { headers: this.getHeaders() }
     );
   }

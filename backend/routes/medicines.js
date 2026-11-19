@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
+const upload = require('../middleware/upload');
 
 const router = express.Router();
 
@@ -31,7 +32,7 @@ function authenticateToken(req, res, next) {
 router.use(authenticateToken);
 
 // ADD MEDICINE
-router.post('/', async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
   const connection = db.promise();
 
   try {
@@ -42,10 +43,13 @@ router.post('/', async (req, res) => {
       reason,
       start_date,
       end_date,
-      image,
       notes,
       intake_times
     } = req.body;
+
+    const image = req.file
+      ? `/uploads/${req.file.filename}`
+      : (req.body.image || null);
 
     if (!medicine_name || !dosage || !category || !reason || !start_date) {
       return res.status(400).json({
@@ -59,8 +63,21 @@ router.post('/', async (req, res) => {
       });
     }
 
+    // PARSE INTAKE TIMES FROM FORMDATA
+    let parsedIntakeTimes;
+
+    try {
+      parsedIntakeTimes = typeof intake_times === 'string'
+        ? JSON.parse(intake_times)
+        : intake_times;
+    } catch {
+      return res.status(400).json({
+        message: 'Invalid intake schedule data.'
+      });
+    }
+
     // VALIDATE INTAKE SCHEDULES
-    if (!Array.isArray(intake_times) || intake_times.length === 0) {
+    if (!Array.isArray(parsedIntakeTimes) || parsedIntakeTimes.length === 0) {
       return res.status(400).json({
         message: 'Please add at least one intake schedule.'
       });
@@ -68,7 +85,7 @@ router.post('/', async (req, res) => {
 
     const validTimeFormat = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
-    if (!intake_times.every(time =>
+    if (!parsedIntakeTimes.every(time =>
       typeof time === 'string' && validTimeFormat.test(time)
     )) {
       return res.status(400).json({
@@ -76,7 +93,7 @@ router.post('/', async (req, res) => {
       });
     }
 
-    const uniqueIntakeTimes = [...new Set(intake_times)];
+    const uniqueIntakeTimes = [...new Set(parsedIntakeTimes)];
 
     // START DATABASE TRANSACTION
     await connection.beginTransaction();
@@ -170,6 +187,7 @@ router.get('/today-schedules', async (req, res) => {
          ms.medicine_id,
          m.medicine_name,
          m.dosage,
+         m.image,
          ms.intake_time,
          (
            SELECT mh.status
@@ -236,8 +254,16 @@ router.get('/:id', async (req, res) => {
 
 
 // EDIT MEDICINE
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.single('image'), async (req, res) => {
   try {
+    console.log('UPDATE BODY:', req.body);
+    console.log('UPDATE FILE:', req.file);
+
+    // SAVE NEW MEDICINE IMAGE PATH
+    if (req.file) {
+      req.body.image = `/uploads/${req.file.filename}`;
+    }
+
     const allowedFields = [
       'medicine_name',
       'dosage',
