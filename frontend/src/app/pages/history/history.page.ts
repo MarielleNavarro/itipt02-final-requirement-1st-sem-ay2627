@@ -24,6 +24,7 @@ import { Medicine, MedicineService } from '../../services/medicine.service';
 export class HistoryPage {
 
   medicines: Medicine[] = [];
+
   selectedFilter: string = 'All';
 
   isLoading = true;

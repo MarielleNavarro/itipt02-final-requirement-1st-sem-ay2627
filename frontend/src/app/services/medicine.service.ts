@@ -45,6 +45,21 @@ export interface MedicinesResponse {
   medicines: Medicine[];
 }
 
+// TODAY'S MEDICINE SCHEDULE
+export interface TodaySchedule {
+  medicine_id: number;
+  medicine_name: string;
+  dosage: string;
+  intake_time: string;
+  status: 'Taken' | 'Missed' | 'Skipped' | null;
+}
+
+// TODAY'S SCHEDULES RESPONSE
+export interface TodaySchedulesResponse {
+  message: string;
+  schedules: TodaySchedule[];
+}
+
 // SINGLE MEDICINE RESPONSE
 export interface MedicineResponse {
   message: string;
@@ -90,6 +105,14 @@ export class MedicineService {
   getMedicines(): Observable<MedicinesResponse> {
     return this.http.get<MedicinesResponse>(
       this.apiUrl,
+      { headers: this.getHeaders() }
+    );
+  }
+
+  // VIEW TODAY'S MEDICINE SCHEDULES
+  getTodaySchedules(): Observable<TodaySchedulesResponse> {
+    return this.http.get<TodaySchedulesResponse>(
+      `${this.apiUrl}/today-schedules`,
       { headers: this.getHeaders() }
     );
   }

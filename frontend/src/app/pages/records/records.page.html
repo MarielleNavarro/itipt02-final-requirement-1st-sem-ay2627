@@ -16,6 +16,12 @@
         [(ngModel)]="searchTerm">
     </div>
 
+    <!-- STATUS FILTER -->
+    <div class="status-filter" *ngIf="selectedStatus !== 'All'">
+      <span>Medicine Status</span>
+      <span class="status-label">{{ selectedStatus }}</span>
+    </div>
+
     <!-- CATEGORY FILTERS -->
     <div class="category-filters">
       <button 

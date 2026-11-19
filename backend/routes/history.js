@@ -123,6 +123,46 @@ router.get('/', async (req, res) => {
 });
 
 
+// GET TODAY'S UPCOMING MEDICINE SCHEDULES
+router.get('/today-schedules', async (req, res) => {
+  try {
+    const [schedules] = await db.promise().query(
+      `SELECT
+         ms.medicine_id,
+         m.medicine_name,
+         m.dosage,
+         ms.intake_time,
+         mh.status
+       FROM medicine_schedules ms
+       INNER JOIN medicines m
+         ON ms.medicine_id = m.id
+       LEFT JOIN medicine_history mh
+         ON mh.medicine_id = ms.medicine_id
+         AND mh.user_id = ms.user_id
+         AND mh.intake_date = CURDATE()
+         AND mh.intake_time = ms.intake_time
+       WHERE ms.user_id = ?
+         AND m.start_date <= CURDATE()
+         AND (m.end_date IS NULL OR m.end_date >= CURDATE())
+       ORDER BY ms.intake_time ASC`,
+      [req.user.id]
+    );
+
+    res.json({
+      message: "Today's medicine schedules retrieved successfully!",
+      schedules: schedules
+    });
+
+  } catch (error) {
+    console.error("Today's schedules error:", error);
+
+    res.status(500).json({
+      message: "Failed to retrieve today's medicine schedules."
+    });
+  }
+});
+
+
 // GET TODAY'S INTAKE SUMMARY
 router.get('/today-summary', async (req, res) => {
   try {

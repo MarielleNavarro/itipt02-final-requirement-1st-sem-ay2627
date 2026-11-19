@@ -350,3 +350,31 @@ ion-content {
     background: #fff0ed;
   }
 }
+
+/* STATUS FILTER INDICATOR */
+.status-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px 0 10px;
+  padding: 10px 14px;
+  background: #f1eafa;
+  border: 1px solid #e8def3;
+  border-radius: 10px;
+
+  span:first-child {
+    color: #50377d;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .status-label {
+    color: #8056bd;
+    background: #ffffff;
+    border: 1px solid #d9c7ee;
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+}

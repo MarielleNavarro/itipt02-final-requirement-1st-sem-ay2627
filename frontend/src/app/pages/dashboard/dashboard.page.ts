@@ -16,7 +16,13 @@ import {
 } from 'ionicons/icons';
 
 import { AuthService } from '../../services/auth.service';
-import { Medicine, MedicineService } from '../../services/medicine.service';
+
+import { 
+  Medicine, 
+  MedicineService,
+  TodaySchedule
+} from '../../services/medicine.service';
+
 import { HistoryService, MedicineHistory } from '../../services/history.service';
 
 @Component({
@@ -39,13 +45,7 @@ export class DashboardPage {
   todayTaken = 0;
   todayTotal = 0;
 
-  upcomingToday = [
-    {
-      name: 'Cetirizine',
-      dosage: '10 mg',
-      time: '8:00 PM'
-    }
-  ];
+  upcomingToday: TodaySchedule[] = [];
 
   constructor(
     private authService: AuthService,
@@ -75,6 +75,7 @@ export class DashboardPage {
   ionViewWillEnter() {
     this.loadMedicines();
     this.loadTodaySummary();
+    this.loadTodaySchedules();
   }
 
   // LOAD MEDICINES
@@ -116,6 +117,24 @@ export class DashboardPage {
       },
       error: (error) => {
         console.error('Error loading today intake summary:', error);
+      }
+    });
+  }
+
+  // LOAD TODAY'S MEDICINE SCHEDULES
+  loadTodaySchedules() {
+    this.medicineService.getTodaySchedules().subscribe({
+      next: (response) => {
+        console.log('TODAY SCHEDULES RESPONSE:', response);
+
+        this.upcomingToday = response.schedules;
+
+        console.log('UPCOMING TODAY DATA:', this.upcomingToday);
+
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error loading today medicine schedules:', error);
       }
     });
   }

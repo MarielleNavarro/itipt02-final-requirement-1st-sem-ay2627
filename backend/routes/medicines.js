@@ -30,8 +30,6 @@ function authenticateToken(req, res, next) {
 // All medicine routes require authentication
 router.use(authenticateToken);
 
-
-
 // ADD MEDICINE
 router.post('/', async (req, res) => {
   const connection = db.promise();
@@ -159,6 +157,50 @@ router.get('/', async (req, res) => {
 
     res.status(500).json({
       message: 'Failed to retrieve medicine records.'
+    });
+  }
+});
+
+
+// GET TODAY'S UPCOMING MEDICINE SCHEDULES
+router.get('/today-schedules', async (req, res) => {
+  try {
+    const [schedules] = await db.promise().query(
+      `SELECT
+         ms.medicine_id,
+         m.medicine_name,
+         m.dosage,
+         ms.intake_time,
+         (
+           SELECT mh.status
+           FROM medicine_history mh
+           WHERE mh.medicine_id = ms.medicine_id
+             AND mh.user_id = ms.user_id
+             AND mh.intake_date = CURDATE()
+             AND mh.intake_time = ms.intake_time
+           ORDER BY mh.id DESC
+           LIMIT 1
+         ) AS status
+       FROM medicine_schedules ms
+       INNER JOIN medicines m
+         ON ms.medicine_id = m.id
+       WHERE ms.user_id = ?
+         AND m.start_date <= CURDATE()
+         AND (m.end_date IS NULL OR m.end_date >= CURDATE())
+       ORDER BY ms.intake_time ASC`,
+      [req.user.id]
+    );
+
+    res.json({
+      message: "Today's medicine schedules retrieved successfully!",
+      schedules: schedules
+    });
+
+  } catch (error) {
+    console.error("Today's schedules error:", error);
+
+    res.status(500).json({
+      message: "Failed to retrieve today's medicine schedules."
     });
   }
 });

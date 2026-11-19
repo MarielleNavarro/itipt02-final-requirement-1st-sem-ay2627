@@ -2,7 +2,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { IonContent, IonIcon, AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
@@ -31,6 +31,7 @@ export class RecordsPage {
 
   searchTerm: string = '';
   selectedCategory: string = 'All';
+  selectedStatus: string = 'All';
 
   isLoading = true;
   errorMessage = '';
@@ -39,6 +40,7 @@ export class RecordsPage {
   constructor(
     private medicineService: MedicineService,
     private router: Router,
+    private route: ActivatedRoute,
     private alertController: AlertController,
     private cdr: ChangeDetectorRef
   ) {
@@ -57,6 +59,16 @@ export class RecordsPage {
   }
 
   ionViewWillEnter() {
+    const status = this.route.snapshot.queryParamMap.get('status');
+
+    if (status === 'Ongoing' || status === 'Completed') {
+      this.selectedCategory = 'All';
+      this.selectedStatus = status;
+    } else {
+      this.selectedStatus = 'All';
+      this.selectedCategory = 'All';
+    }
+
     this.loadMedicines();
   }
 
@@ -93,17 +105,41 @@ export class RecordsPage {
   // FILTER AND SEARCH MEDICINES
   get filteredMedicines(): Medicine[] {
     return this.medicines.filter(medicine => {
+
       const matchesCategory =
         this.selectedCategory === 'All' ||
         medicine.category === this.selectedCategory;
+
+      const endDate = medicine.end_date
+        ? String(medicine.end_date).slice(0, 10)
+        : null;
+
+      const today = this.getTodayDate();
+
+      const medicineStatus =
+        !endDate || endDate >= today ? 'Ongoing' : 'Completed';
+
+      const matchesStatus =
+        this.selectedStatus === 'All' ||
+        medicineStatus === this.selectedStatus;
 
       const matchesSearch =
         medicine.medicine_name
           .toLowerCase()
           .includes(this.searchTerm.toLowerCase().trim());
 
-      return matchesCategory && matchesSearch;
+      return matchesCategory && matchesStatus && matchesSearch;
     });
+  }
+
+  // GET TODAY'S DATE
+  getTodayDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
   }
 
   // OPEN OR CLOSE QUICK ACTIONS MENU
