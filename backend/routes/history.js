@@ -123,6 +123,54 @@ router.get('/', async (req, res) => {
 });
 
 
+// GET TODAY'S INTAKE SUMMARY
+router.get('/today-summary', async (req, res) => {
+  try {
+    const [schedules] = await db.promise().query(
+      `SELECT
+         ms.medicine_id,
+         ms.intake_time
+       FROM medicine_schedules ms
+       INNER JOIN medicines m ON ms.medicine_id = m.id
+       WHERE ms.user_id = ?
+         AND m.start_date <= CURDATE()
+         AND (m.end_date IS NULL OR m.end_date >= CURDATE())`,
+      [req.user.id]
+    );
+
+    const [history] = await db.promise().query(
+      `SELECT medicine_id, intake_time
+       FROM medicine_history
+       WHERE user_id = ?
+         AND intake_date = CURDATE()
+         AND status = 'Taken'`,
+      [req.user.id]
+    );
+
+    const taken = schedules.filter(schedule =>
+      history.some(record =>
+        record.medicine_id === schedule.medicine_id &&
+        String(record.intake_time).slice(0, 8) ===
+        String(schedule.intake_time).slice(0, 8)
+      )
+    ).length;
+
+    res.json({
+      message: "Today's intake summary retrieved successfully!",
+      total: schedules.length,
+      taken: taken
+    });
+
+  } catch (error) {
+    console.error("Today's intake summary error:", error);
+
+    res.status(500).json({
+      message: "Failed to retrieve today's intake summary."
+    });
+  }
+});
+
+
 // VIEW ONE MEDICINE HISTORY
 router.get('/:id', async (req, res) => {
   try {
