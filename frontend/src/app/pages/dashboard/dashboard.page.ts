@@ -77,6 +77,16 @@ export class DashboardPage {
 
   // RELOAD MEDICINES EVERY TIME DASHBOARD OPENS
   ionViewWillEnter() {
+
+    // REFRESH LOGGED-IN USER INFORMATION
+    const user = this.authService.getCurrentUser();
+
+    this.firstName = user?.first_name
+      ? user.first_name
+          .toLowerCase()
+          .replace(/\b\w/g, letter => letter.toUpperCase())
+      : '';
+
     this.loadMedicines();
     this.loadTodaySummary();
     this.loadTodaySchedules();
