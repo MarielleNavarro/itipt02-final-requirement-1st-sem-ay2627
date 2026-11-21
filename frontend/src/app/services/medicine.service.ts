@@ -167,18 +167,43 @@ export class MedicineService {
 
     const formData = new FormData();
 
-    formData.append('medicine_name', data.medicine_name || '');
-    formData.append('dosage', data.dosage || '');
-    formData.append('category', data.category || '');
-    formData.append('reason', data.reason || '');
-    formData.append('start_date', data.start_date || '');
-    formData.append('end_date', data.end_date || '');
-    formData.append('notes', data.notes || '');
+    if (data.medicine_name !== undefined) {
+      formData.append('medicine_name', data.medicine_name);
+    }
+
+    if (data.dosage !== undefined) {
+      formData.append('dosage', data.dosage);
+    }
+
+    if (data.category !== undefined) {
+      formData.append('category', data.category);
+    }
+
+    if (data.reason !== undefined) {
+      formData.append('reason', data.reason);
+    }
+
+    if (data.start_date !== undefined) {
+      formData.append('start_date', data.start_date);
+    }
+
+    if (data.end_date !== undefined) {
+      formData.append('end_date', data.end_date || '');
+    }
+
+    if (data.notes !== undefined) {
+      formData.append('notes', data.notes || '');
+    }
+
+    if (data.intake_times !== undefined) {
+      formData.append(
+        'intake_times',
+        JSON.stringify(data.intake_times)
+      );
+    }
 
     if (imageFile) {
       formData.append('image', imageFile);
-    } else {
-      formData.append('image', data.image || '');
     }
 
     return this.http.put<MedicineActionResponse>(
@@ -187,6 +212,7 @@ export class MedicineService {
       { headers: this.getHeaders() }
     );
   }
+
 
   // DELETE MEDICINE
   deleteMedicine(id: number): Observable<MedicineActionResponse> {

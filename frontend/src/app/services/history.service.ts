@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -12,7 +13,24 @@ export interface MedicineHistory {
   intake_date: string;
   intake_time: string;
   status: 'Taken' | 'Missed' | 'Skipped';
-  notes?: string;
+  notes?: string | null;
+}
+
+export interface HistoryInput {
+  medicine_id: number;
+  intake_date: string;
+  intake_time: string;
+  status: 'Taken' | 'Missed' | 'Skipped';
+  notes?: string | null;
+}
+
+export interface HistoryResponse {
+  message: string;
+  history: MedicineHistory;
+}
+
+export interface HistoryActionResponse {
+  message: string;
 }
 
 @Injectable({
@@ -33,6 +51,15 @@ export class HistoryService {
     });
   }
 
+  // ADD MEDICINE HISTORY
+  addHistory(data: HistoryInput): Observable<HistoryActionResponse> {
+    return this.http.post<HistoryActionResponse>(
+      this.apiUrl,
+      data,
+      { headers: this.getHeaders() }
+    );
+  }
+
   // GET ALL MEDICINE HISTORY
   getHistory(): Observable<{
     message: string;
@@ -44,6 +71,34 @@ export class HistoryService {
     }>(this.apiUrl, {
       headers: this.getHeaders()
     });
+  }
+
+  // GET ONE MEDICINE HISTORY
+  getOneHistory(id: number): Observable<HistoryResponse> {
+    return this.http.get<HistoryResponse>(
+      `${this.apiUrl}/${id}`,
+      { headers: this.getHeaders() }
+    );
+  }
+
+  // UPDATE MEDICINE HISTORY
+  updateHistory(
+    id: number,
+    data: Partial<HistoryInput>
+  ): Observable<HistoryActionResponse> {
+    return this.http.put<HistoryActionResponse>(
+      `${this.apiUrl}/${id}`,
+      data,
+      { headers: this.getHeaders() }
+    );
+  }
+
+  // DELETE MEDICINE HISTORY
+  deleteHistory(id: number): Observable<HistoryActionResponse> {
+    return this.http.delete<HistoryActionResponse>(
+      `${this.apiUrl}/${id}`,
+      { headers: this.getHeaders() }
+    );
   }
 
   // GET TODAY'S INTAKE SUMMARY
