@@ -104,7 +104,14 @@
       </div>
 
       <div class="medicine-check">
-        <ion-icon name="time-outline"></ion-icon>
+        <button
+          class="take-button"
+          [disabled]="medicine.status === 'Taken'"
+          (click)="markAsTaken(medicine)">
+
+          {{ medicine.status === 'Taken' ? 'Already Taken' : 'Mark as Taken' }}
+
+        </button>
       </div>
     </div>
 

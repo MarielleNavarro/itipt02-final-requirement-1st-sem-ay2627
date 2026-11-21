@@ -153,6 +153,44 @@ export class DashboardPage {
     });
   }
 
+  // MARK MEDICINE AS TAKEN
+  markAsTaken(schedule: TodaySchedule) {
+
+    // Prevent duplicate clicks
+    if (schedule.status === 'Taken') {
+      return;
+    }
+
+    const previousStatus = schedule.status;
+
+    // Temporarily disable the button
+    schedule.status = 'Taken';
+    this.cdr.detectChanges();
+
+    const historyData = {
+      medicine_id: schedule.medicine_id,
+      intake_date: this.getTodayDate(),
+      intake_time: schedule.intake_time.substring(0, 5),
+      status: 'Taken' as const
+    };
+
+    this.historyService.addHistory(historyData).subscribe({
+      next: (response) => {
+        console.log('Medicine intake recorded:', response);
+
+        this.loadTodaySchedules();
+        this.loadTodaySummary();
+      },
+      error: (error) => {
+        console.error('Error recording medicine intake:', error);
+
+        // Restore previous status if saving fails
+        schedule.status = previousStatus;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   // CHECK MEDICINE STATUS
   getMedicineStatus(medicine: Medicine): string {
     if (!medicine.end_date) {

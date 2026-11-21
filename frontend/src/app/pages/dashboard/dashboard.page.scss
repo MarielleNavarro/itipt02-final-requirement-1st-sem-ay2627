@@ -247,19 +247,32 @@ ion-content {
 }
 
 .medicine-check {
-  width: 25px;
-  height: 25px;
-  border: 1.5px solid #8056bd;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-left: 7px;
+  border: none;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+}
 
-  ion-icon {
-    font-size: 17px;
-    color: #8056bd;
-  }
+.take-button {
+  background: #8056bd;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.take-button:disabled {
+  background: #e9e1f3;
+  color: #8056bd;
+  opacity: 1;
+  cursor: not-allowed;
 }
 
 // bottom navigation

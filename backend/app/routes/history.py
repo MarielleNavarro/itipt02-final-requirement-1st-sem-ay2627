@@ -71,6 +71,31 @@ def add_history(
 
         cursor.execute(
             """
+            SELECT id FROM medicine_history
+            WHERE user_id = %s
+            AND medicine_id = %s
+            AND intake_date = %s
+            AND intake_time = %s
+            LIMIT 1
+            """,
+            (
+                current_user["id"],
+                data.medicine_id,
+                data.intake_date,
+                data.intake_time
+            )
+        )
+
+        existing_history = cursor.fetchone()
+
+        if existing_history:
+            raise HTTPException(
+                status_code=409,
+                detail="This medicine intake has already been recorded."
+            )
+
+        cursor.execute(
+            """
             INSERT INTO medicine_history
             (user_id, medicine_id, intake_date, intake_time, status, notes)
             VALUES (%s, %s, %s, %s, %s, %s)
