@@ -57,7 +57,11 @@ export class DashboardPage {
     // GET LOGGED-IN USER INFORMATION
     const user = this.authService.getCurrentUser();
 
-    this.firstName = user?.first_name || '';
+    this.firstName = user?.first_name
+      ? user.first_name
+          .toLowerCase()
+          .replace(/\b\w/g, letter => letter.toUpperCase())
+      : '';
 
     addIcons({
       homeOutline,

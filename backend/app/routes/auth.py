@@ -2,9 +2,10 @@
 import secrets
 import bcrypt
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 
+from app.dependencies import get_current_user
 from app.database import get_db_connection
 from app.security import hash_password, verify_password, create_access_token
 
@@ -27,6 +28,11 @@ class LoginRequest(BaseModel):
 class ForgotPasswordRequest(BaseModel):
     username: str
     recoveryCode: str
+    newPassword: str
+
+
+class ChangePasswordRequest(BaseModel):
+    currentPassword: str
     newPassword: str
 
 
@@ -243,6 +249,73 @@ def forgot_password(data: ForgotPasswordRequest):
         raise HTTPException(
             status_code=500,
             detail="Password reset failed."
+        )
+
+    finally:
+        cursor.close()
+        connection.close()
+
+
+@router.put("/change-password")
+def change_password(
+    data: ChangePasswordRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    if len(data.newPassword) < 8:
+        raise HTTPException(
+            status_code=400,
+            detail="New password must be at least 8 characters."
+        )
+
+    connection = get_db_connection()
+
+    if connection is None:
+        raise HTTPException(
+            status_code=500,
+            detail="Database connection failed."
+        )
+
+    cursor = connection.cursor(dictionary=True)
+
+    try:
+        cursor.execute(
+            "SELECT password FROM users WHERE id = %s",
+            (current_user["id"],)
+        )
+
+        user = cursor.fetchone()
+
+        if not user or not verify_password(
+            data.currentPassword,
+            user["password"]
+        ):
+            raise HTTPException(
+                status_code=400,
+                detail="Current password is incorrect."
+            )
+
+        new_password_hash = hash_password(data.newPassword)
+
+        cursor.execute(
+            "UPDATE users SET password = %s WHERE id = %s",
+            (new_password_hash, current_user["id"])
+        )
+
+        connection.commit()
+
+        return {
+            "message": "Password changed successfully."
+        }
+
+    except HTTPException:
+        connection.rollback()
+        raise
+
+    except Exception:
+        connection.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to change password."
         )
 
     finally:

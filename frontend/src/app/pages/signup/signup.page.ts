@@ -75,8 +75,8 @@ export class SignupPage {
     }
 
     const signupData = {
-      first_name: this.firstName.trim(),
-      last_name: this.lastName.trim(),
+      first_name: this.formatName(this.firstName),
+      last_name: this.formatName(this.lastName),
       username: this.username.trim(),
       password: this.password
     };
@@ -135,6 +135,13 @@ export class SignupPage {
 
     });
 
+  }
+
+  formatName(name: string): string {
+    return name
+      .trim()
+      .toLowerCase()
+      .replace(/\b\w/g, letter => letter.toUpperCase());
   }
 
   async showAlert(header: string, message: string) {

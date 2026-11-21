@@ -31,6 +31,11 @@ export interface ForgotPasswordResponse {
   recoveryCode: string;
 }
 
+// CHANGE PASSWORD RESPONSE
+export interface ChangePasswordResponse {
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -78,6 +83,22 @@ export class AuthService {
     return this.http.post<ForgotPasswordResponse>(
       `${this.apiUrl}/forgot-password`,
       data
+    );
+  }
+
+  // CHANGE PASSWORD
+  changePassword(data: {
+    currentPassword: string;
+    newPassword: string;
+  }): Observable<ChangePasswordResponse> {
+    return this.http.put<ChangePasswordResponse>(
+      `${this.apiUrl}/change-password`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${this.getToken()}`
+        }
+      }
     );
   }
 
