@@ -44,10 +44,19 @@ def add_history(
     data: HistoryRequest,
     current_user: dict = Depends(get_current_user)
 ):
-    if data.status not in VALID_STATUSES:
-        raise HTTPException(status_code=400, detail="Invalid history status.")
+    print("RECEIVED STATUS:", data.status)
+    print("RECEIVED TIME:", data.intake_time)
 
-    validate_time(data.intake_time)
+    if data.status not in VALID_STATUSES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid history status: {data.status}"
+        )
+
+    try:
+        validate_time(data.intake_time)
+    except HTTPException:
+        raise
 
     connection = get_db_connection()
     if connection is None:

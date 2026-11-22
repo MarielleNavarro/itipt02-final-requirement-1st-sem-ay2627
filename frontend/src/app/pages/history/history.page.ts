@@ -106,7 +106,7 @@ export class HistoryPage {
     const endDate = String(medicine.end_date).slice(0, 10);
     const today = this.getTodayDate();
 
-    return endDate < today ? 'Completed' : 'Ongoing';
+    return endDate <= today ? 'Completed' : 'Ongoing';
   }
 
   // GET MEDICINE IMAGE URL

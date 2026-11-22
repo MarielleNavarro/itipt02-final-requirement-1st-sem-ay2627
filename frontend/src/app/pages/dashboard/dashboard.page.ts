@@ -156,6 +156,8 @@ export class DashboardPage {
   // MARK MEDICINE AS TAKEN
   markAsTaken(schedule: TodaySchedule) {
 
+    console.log('STEP 1: Mark as Taken clicked', schedule);
+
     // Prevent duplicate clicks
     if (schedule.status === 'Taken') {
       return;
@@ -170,9 +172,16 @@ export class DashboardPage {
     const historyData = {
       medicine_id: schedule.medicine_id,
       intake_date: this.getTodayDate(),
-      intake_time: schedule.intake_time.substring(0, 5),
+      intake_time: schedule.intake_time
+        .replace(/[^0-9:]/g, '')
+        .split(':')
+        .slice(0, 2)
+        .map(part => part.padStart(2, '0'))
+        .join(':'),
       status: 'Taken' as const
     };
+
+    console.log('STEP 2: Sending history data', historyData);
 
     this.historyService.addHistory(historyData).subscribe({
       next: (response) => {
