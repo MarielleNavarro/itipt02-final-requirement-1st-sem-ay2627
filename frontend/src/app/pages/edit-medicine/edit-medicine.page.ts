@@ -1,11 +1,23 @@
+
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IonContent, IonIcon, AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { arrowBackOutline, cameraOutline } from 'ionicons/icons';
+import {
+  arrowBackOutline,
+  cameraOutline,
+  trashOutline,
+  addCircleOutline
+} from 'ionicons/icons';
 import { Medicine, MedicineService } from '../../services/medicine.service';
+
+interface IntakeTime {
+  hour: string;
+  minute: string;
+  period: 'AM' | 'PM';
+}
 
 @Component({
   selector: 'app-edit-medicine',
@@ -24,8 +36,18 @@ export class EditMedicinePage implements OnInit {
   reason = '';
   startDate = '';
   endDate = '';
-
   notes = '';
+
+  // INTAKE SCHEDULE
+  intakeTimes: IntakeTime[] = [];
+
+  hours: string[] = Array.from(
+    { length: 12 },
+    (_, i) => String(i + 1)
+  );
+
+  minutes: string[] = ['00', '10', '20', '30', '40', '50'];
+
   isLoading = true;
 
   // MEDICINE IMAGE
@@ -40,7 +62,8 @@ export class EditMedicinePage implements OnInit {
     reason: '',
     startDate: '',
     endDate: '',
-    notes: ''
+    notes: '',
+    intakeTimes: [] as IntakeTime[]
   };
 
   constructor(
@@ -52,7 +75,9 @@ export class EditMedicinePage implements OnInit {
   ) {
     addIcons({
       arrowBackOutline,
-      cameraOutline
+      cameraOutline,
+      trashOutline,
+      addCircleOutline
     });
   }
 
@@ -71,6 +96,8 @@ export class EditMedicinePage implements OnInit {
       this.startDate !== this.originalValues.startDate ||
       this.endDate !== this.originalValues.endDate ||
       this.notes.trim() !== this.originalValues.notes ||
+      JSON.stringify(this.intakeTimes) !==
+        JSON.stringify(this.originalValues.intakeTimes) ||
       this.selectedImage !== null
     );
   }
@@ -90,11 +117,46 @@ export class EditMedicinePage implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
+  // CONVERT 24-HOUR TIME TO 12-HOUR SCHEDULE
+  formatTimeForDisplay(time: string): IntakeTime {
+    const [hours, minutes] = time.substring(0, 5).split(':');
+
+    let hour = Number(hours);
+    const period: 'AM' | 'PM' = hour >= 12 ? 'PM' : 'AM';
+
+    if (hour === 0) {
+      hour = 12;
+    } else if (hour > 12) {
+      hour -= 12;
+    }
+
+    return {
+      hour: String(hour),
+      minute: minutes || '00',
+      period
+    };
+  }
+
+  // CONVERT SCHEDULE TO 24-HOUR TIME
+  getFormattedIntakeTimes(): string[] {
+    return this.intakeTimes.map(schedule => {
+      let hour = Number(schedule.hour);
+
+      if (schedule.period === 'AM' && hour === 12) {
+        hour = 0;
+      } else if (schedule.period === 'PM' && hour !== 12) {
+        hour += 12;
+      }
+
+      return `${String(hour).padStart(2, '0')}:${schedule.minute}`;
+    });
+  }
+
   // LOAD EXISTING MEDICINE
   loadMedicine() {
     this.isLoading = true;
     this.cdr.detectChanges();
-    
+
     this.medicineService.getMedicine(this.medicineId).subscribe({
       next: (response) => {
         this.medicine = response.medicine;
@@ -112,6 +174,11 @@ export class EditMedicinePage implements OnInit {
         this.endDate = this.formatDateForInput(this.medicine.end_date);
         this.notes = this.medicine.notes || '';
 
+        // LOAD EXISTING INTAKE SCHEDULES
+        this.intakeTimes = (this.medicine.intake_times || []).map(
+          time => this.formatTimeForDisplay(time)
+        );
+
         // SAVE ORIGINAL VALUES FOR COMPARISON
         this.originalValues = {
           medicineName: this.medicineName.trim(),
@@ -120,14 +187,17 @@ export class EditMedicinePage implements OnInit {
           reason: this.reason.trim(),
           startDate: this.startDate,
           endDate: this.endDate,
-          notes: this.notes.trim()
+          notes: this.notes.trim(),
+          intakeTimes: this.intakeTimes.map(schedule => ({ ...schedule }))
         };
 
         this.isLoading = false;
         this.cdr.detectChanges();
       },
+
       error: async (error) => {
         console.error('Error loading medicine:', error);
+
         this.isLoading = false;
         this.cdr.detectChanges();
 
@@ -190,6 +260,22 @@ export class EditMedicinePage implements OnInit {
     this.imagePreview = URL.createObjectURL(file);
   }
 
+  // ADD NEW INTAKE TIME
+  addIntakeTime() {
+    this.intakeTimes.push({
+      hour: '8',
+      minute: '00',
+      period: 'AM'
+    });
+  }
+
+  // REMOVE INTAKE TIME
+  removeIntakeTime(index: number) {
+    if (this.intakeTimes.length > 1) {
+      this.intakeTimes.splice(index, 1);
+    }
+  }
+
   // UPDATE MEDICINE
   updateMedicine() {
     if (
@@ -199,7 +285,18 @@ export class EditMedicinePage implements OnInit {
       !this.reason.trim() ||
       !this.startDate
     ) {
-      this.showAlert('Incomplete Information', 'Please fill in all required fields.');
+      this.showAlert(
+        'Incomplete Information',
+        'Please fill in all required fields.'
+      );
+      return;
+    }
+
+    if (this.intakeTimes.length === 0) {
+      this.showAlert(
+        'Missing Intake Time',
+        'Please add at least one intake time.'
+      );
       return;
     }
 
@@ -219,7 +316,8 @@ export class EditMedicinePage implements OnInit {
       start_date: this.startDate,
       end_date: this.endDate || null,
       image: this.medicine?.image || null,
-      notes: this.notes.trim() || null
+      notes: this.notes.trim() || null,
+      intake_times: this.getFormattedIntakeTimes()
     };
 
     this.medicineService.updateMedicine(
@@ -243,10 +341,11 @@ export class EditMedicinePage implements OnInit {
 
         await alert.present();
       },
+
       error: async (error) => {
         console.error('Error updating medicine:', error);
 
-        this.showAlert(
+        await this.showAlert(
           'Update Failed',
           error.error?.message || 'Unable to update medicine.'
         );

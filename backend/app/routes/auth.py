@@ -197,7 +197,7 @@ def forgot_password(data: ForgotPasswordRequest):
     try:
         cursor.execute(
             """
-            SELECT id, recovery_code
+            SELECT id, recovery_code, password
             FROM users
             WHERE username = %s
             """,
@@ -213,6 +213,12 @@ def forgot_password(data: ForgotPasswordRequest):
             raise HTTPException(
                 status_code=400,
                 detail="Invalid username or recovery code."
+            )
+
+        if verify_password(data.newPassword, user["password"]):
+            raise HTTPException(
+                status_code=400,
+                detail="New password must be different from your current password."
             )
 
         new_recovery_code = secrets.token_hex(4).upper()

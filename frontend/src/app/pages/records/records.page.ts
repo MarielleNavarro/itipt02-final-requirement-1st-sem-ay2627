@@ -34,6 +34,31 @@ export class RecordsPage {
     return this.medicineService.getImageUrl(image);
   }
 
+  // CONVERT 24-HOUR TIME TO 12-HOUR FORMAT
+  formatIntakeTime(time: string): string {
+    const [hours, minutes] = time.substring(0, 5).split(':');
+
+    let hour = Number(hours);
+    const period = hour >= 12 ? 'PM' : 'AM';
+
+    if (hour === 0) {
+      hour = 12;
+    } else if (hour > 12) {
+      hour -= 12;
+    }
+
+    return `${hour}:${minutes} ${period}`;
+  }
+
+  // GET ALL MEDICINE INTAKE TIMES
+  getFormattedIntakeTimes(medicine: Medicine): string {
+    const times = medicine.intake_times || [];
+
+    return times
+      .map(time => this.formatIntakeTime(time))
+      .join(', ');
+  }
+
   searchTerm: string = '';
   selectedCategory: string = 'All';
   selectedStatus: string = 'All';
@@ -187,17 +212,13 @@ export class RecordsPage {
             this.medicineService.deleteMedicine(medicine.id).subscribe({
               next: async () => {
 
-                // REMOVE DELETED MEDICINE FROM THE LIST
                 this.medicines = this.medicines.filter(
                   item => item.id !== medicine.id
                 );
 
                 this.activeMenuId = null;
-
-                // UPDATE RECORDS PAGE IMMEDIATELY
                 this.cdr.detectChanges();
 
-                // SHOW SUCCESS ALERT
                 const successAlert = await this.alertController.create({
                   header: 'Success',
                   message: 'Medicine deleted successfully!',

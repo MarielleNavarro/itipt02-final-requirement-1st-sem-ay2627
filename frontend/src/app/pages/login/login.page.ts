@@ -1,13 +1,16 @@
 
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { addIcons } from 'ionicons';
+import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
 import {
   IonContent,
   IonLabel,
   IonInput,
   IonButton,
+  IonIcon,
   AlertController
 } from '@ionic/angular';
 
@@ -24,7 +27,8 @@ import { AuthService } from '../../services/auth.service';
     IonContent,
     IonLabel,
     IonInput,
-    IonButton
+    IonButton,
+    IonIcon
   ],
 })
 export class LoginPage {
@@ -33,11 +37,35 @@ export class LoginPage {
   username = '';
   password = '';
 
+  showPassword = false;
+  @ViewChild('usernameInput') usernameInput!: IonInput;
+  @ViewChild('passwordInput') passwordInput!: IonInput;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
   constructor(
     private authService: AuthService,
     private router: Router,
     private alertController: AlertController
-  ) {}
+  ) {
+    addIcons({
+      'eye-outline': eyeOutline,
+      'eye-off-outline': eyeOffOutline
+    });
+  }
+
+  ionViewWillEnter() {
+    this.username = '';
+    this.password = '';
+    this.showPassword = false;
+
+    if (this.usernameInput && this.passwordInput) {
+      this.usernameInput.value = '';
+      this.passwordInput.value = '';
+    }
+  }
 
   login() {
     if (!this.username.trim() || !this.password) {
@@ -65,6 +93,7 @@ export class LoginPage {
 
       error: (error) => {
         const message =
+          error.error?.detail ||
           error.error?.message ||
           'Unable to login. Please try again.';
 

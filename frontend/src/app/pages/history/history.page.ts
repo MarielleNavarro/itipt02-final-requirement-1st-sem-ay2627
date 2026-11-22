@@ -166,4 +166,30 @@ export class HistoryPage {
     });
   }
 
+  // FORMAT INTAKE TIME
+  formatIntakeTime(time: string): string {
+    const [hours, minutes] = time.substring(0, 5).split(':');
+
+    let hour = Number(hours);
+
+    const period = hour >= 12 ? 'PM' : 'AM';
+
+    if (hour === 0) {
+      hour = 12;
+    } else if (hour > 12) {
+      hour -= 12;
+    }
+
+    return `${hour}:${minutes} ${period}`;
+  }
+
+  // GET FORMATTED INTAKE TIMES
+  getFormattedIntakeTimes(medicine: Medicine): string {
+    const times = medicine.intake_times || [];
+
+    return times
+      .map(time => this.formatIntakeTime(time))
+      .join(', ');
+  }
+
 }

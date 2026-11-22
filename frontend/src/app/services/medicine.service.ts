@@ -17,6 +17,7 @@ export interface Medicine {
   end_date: string | null;
   image: string | null;
   notes: string | null;
+  intake_times: string[];
   created_at?: string;
 }
 

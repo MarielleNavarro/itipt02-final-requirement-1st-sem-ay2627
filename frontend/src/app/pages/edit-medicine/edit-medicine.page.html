@@ -127,6 +127,76 @@
 
       </div>
 
+      <!-- INTAKE SCHEDULE -->
+      <div class="form-group">
+        <label>Intake Schedule</label>
+
+        <div
+          class="schedule-card"
+          *ngFor="let schedule of intakeTimes; let i = index">
+
+          <div class="schedule-header">
+            <span class="schedule-title">Schedule {{ i + 1 }}</span>
+
+            <button
+              type="button"
+              class="remove-time-button"
+              *ngIf="intakeTimes.length > 1"
+              (click)="removeIntakeTime(i)">
+              <ion-icon name="trash-outline"></ion-icon>
+              Remove
+            </button>
+          </div>
+
+          <div class="time-select-row">
+            <div class="time-select-group">
+              <label>Hour</label>
+              <select [(ngModel)]="schedule.hour" name="hour{{ i }}">
+                <option *ngFor="let hour of hours" [value]="hour">
+                  {{ hour }}
+                </option>
+              </select>
+            </div>
+
+            <span class="time-separator">:</span>
+
+            <div class="time-select-group">
+              <label>Minute</label>
+              <select [(ngModel)]="schedule.minute" name="minute{{ i }}">
+                <option *ngFor="let minute of minutes" [value]="minute">
+                  {{ minute }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="period-options">
+            <button
+              type="button"
+              [class.active]="schedule.period === 'AM'"
+              (click)="schedule.period = 'AM'">
+              AM
+            </button>
+
+            <button
+              type="button"
+              [class.active]="schedule.period === 'PM'"
+              (click)="schedule.period = 'PM'">
+              PM
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="add-time-button"
+          (click)="addIntakeTime()">
+          <ion-icon name="add-circle-outline"></ion-icon>
+          Add Another Time
+        </button>
+      </div>
+
+
       <!-- NOTES -->
       <div class="form-group">
         <label>Notes (Optional)</label>

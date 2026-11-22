@@ -1,3 +1,4 @@
+
 <ion-content [fullscreen]="true">
   <div class="login-container">
 
@@ -8,36 +9,51 @@
           alt="Medicine Intake Logo"
           class="app-logo">
 
-        <h1> {{ appName }} </h1>
-        <p> Application </p>
+        <h1>{{ appName }}</h1>
+        <p>Application</p>
       </div>
 
       <div class="section-divider"></div>
 
       <div class="welcome-section">
-        <h2> Welcome Back! </h2>
-        <p> Login to manage your medicine records. </p>
+        <h2>Welcome Back!</h2>
+        <p>Login to manage your medicine records.</p>
       </div>
 
       <div class="form-section">
-        <ion-label> Username </ion-label>
+        <ion-label>Username</ion-label>
         <ion-input
+          #usernameInput
           type="text"
           placeholder="Enter your username"
           fill="outline"
+          autocomplete="off"
           [(ngModel)]="username">
         </ion-input>
 
-        <ion-label> Password </ion-label>
-        <ion-input
-          type="password"
-          placeholder="Enter your password"
-          fill="outline"
-          [(ngModel)]="password">
-        </ion-input>
+        <ion-label>Password</ion-label>
+        <div class="password-input-container">
+          <ion-input
+            #passwordInput
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Enter your password"
+            fill="outline"
+            autocomplete="off"
+            [(ngModel)]="password">
+          </ion-input>
+
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility()">
+            <ion-icon
+              [name]="showPassword ? 'eye-outline' : 'eye-off-outline'">
+            </ion-icon>
+          </button>
+        </div>
 
         <div class="forgot-password">
-          <a routerLink="/forgot-password"> Forgot Password? </a>
+          <a routerLink="/forgot-password">Forgot Password?</a>
         </div>
 
         <ion-button expand="block" (click)="login()">
@@ -45,7 +61,7 @@
         </ion-button>
 
         <div class="signup-section">
-          <p> Don't have an account? <a routerLink="/signup"> Sign Up </a> </p>
+          <p>Don't have an account? <a routerLink="/signup">Sign Up</a></p>
         </div>
       </div>
 

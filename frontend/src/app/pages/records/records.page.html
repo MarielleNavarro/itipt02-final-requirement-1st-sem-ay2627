@@ -81,6 +81,11 @@
           <h3>{{ medicine.medicine_name }}</h3>
           <p>{{ medicine.dosage }}</p>
 
+          <p class="intake-time">
+            <strong>Intake Time:</strong>
+            {{ getFormattedIntakeTimes(medicine) || 'No intake schedule' }}
+          </p>
+
           <span
             class="category-tag"
             [class.temporary]="medicine.category === 'Temporary'"

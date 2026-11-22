@@ -2,99 +2,157 @@
 <ion-content [fullscreen]="true">
   <div class="settings-container">
 
-    <!-- page header -->
+    <!-- PAGE HEADER -->
     <div class="page-header">
-      <h1> Settings </h1>
+      <h1>Settings</h1>
     </div>
 
-    <!-- profile -->
+    <!-- PROFILE -->
     <div class="profile-card" (click)="openProfile()" style="cursor: pointer;">
       <div class="profile-image">
         <ion-icon name="person-outline"></ion-icon>
       </div>
       <div class="profile-info">
-        <h3> {{ fullName }} </h3>
-        <p> View your personal information </p>
+        <h3>{{ fullName }}</h3>
+        <p>View your personal information</p>
       </div>
       <ion-icon name="chevron-forward-outline"></ion-icon>
     </div>
 
-    <!-- settings options -->
+    <!-- SETTINGS OPTIONS -->
     <div class="settings-card">
 
-      <!-- account security -->
       <div class="settings-item" (click)="changePassword()" style="cursor: pointer;">
         <div class="settings-icon">
           <ion-icon name="lock-closed-outline"></ion-icon>
         </div>
         <div class="settings-info">
-          <h3> Account Security </h3>
-          <p> Change password and manage security </p>
+          <h3>Account Security</h3>
+          <p>Change password and manage security</p>
         </div>
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </div>
 
-      <!-- about application -->
       <div class="settings-item" (click)="showAbout()" style="cursor: pointer;">
         <div class="settings-icon">
           <ion-icon name="information-circle-outline"></ion-icon>
         </div>
         <div class="settings-info">
-          <h3> About Application </h3>
-          <p> Learn about Med Intake Monitor </p>
+          <h3>About Application</h3>
+          <p>Learn about Med Intake Monitor</p>
         </div>
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </div>
 
     </div>
 
-    <!-- logout button -->
+    <!-- LOGOUT BUTTON -->
     <button class="logout-button" (click)="logout()">
       <ion-icon name="log-out-outline"></ion-icon>
-      <span> Log Out</span>
+      <span>Log Out</span>
     </button>
- 
+
   </div>
 
-  <!-- bottom navigation -->
+  <!-- CHANGE PASSWORD MODAL -->
+  <div class="password-modal-overlay" *ngIf="showChangePasswordModal">
+
+    <div class="password-modal">
+
+      <h2>Change Password</h2>
+      <p class="modal-description">Update your account password.</p>
+
+      <!-- CURRENT PASSWORD -->
+      <ion-label>Current Password</ion-label>
+      <div class="password-input-wrapper">
+        <input
+          [type]="showCurrentPassword ? 'text' : 'password'"
+          placeholder="Enter current password"
+          [(ngModel)]="currentPassword">
+
+        <ion-icon
+          [name]="showCurrentPassword ? 'eye-outline' : 'eye-off-outline'"
+          class="password-toggle"
+          (click)="showCurrentPassword = !showCurrentPassword">
+        </ion-icon>
+      </div>
+
+      <!-- NEW PASSWORD -->
+      <ion-label>New Password</ion-label>
+      <div class="password-input-wrapper">
+        <input
+          [type]="showNewPassword ? 'text' : 'password'"
+          placeholder="Enter new password"
+          [(ngModel)]="newPassword">
+
+        <ion-icon
+          [name]="showNewPassword ? 'eye-outline' : 'eye-off-outline'"
+          class="password-toggle"
+          (click)="showNewPassword = !showNewPassword">
+        </ion-icon>
+      </div>
+
+      <!-- CONFIRM PASSWORD -->
+      <ion-label>Confirm New Password</ion-label>
+      <div class="password-input-wrapper">
+        <input
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          placeholder="Confirm new password"
+          [(ngModel)]="confirmPassword">
+
+        <ion-icon
+          [name]="showConfirmPassword ? 'eye-outline' : 'eye-off-outline'"
+          class="password-toggle"
+          (click)="showConfirmPassword = !showConfirmPassword">
+        </ion-icon>
+      </div>
+
+      <!-- MODAL BUTTONS -->
+      <div class="password-modal-buttons">
+        <button
+          class="cancel-password-button"
+          (click)="closeChangePassword()">
+          Cancel
+        </button>
+
+        <button
+          class="save-password-button"
+          (click)="submitPasswordChange()">
+          Change Password
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM NAVIGATION -->
   <div class="bottom-navigation">
 
-    <div class="nav-item"
-         routerLink="/dashboard"
-         style="cursor: pointer;">
+    <div class="nav-item" routerLink="/dashboard" style="cursor: pointer;">
       <ion-icon name="home-outline"></ion-icon>
-      <span> Dashboard </span>
+      <span>Dashboard</span>
     </div>
 
-    <div class="nav-item"
-         routerLink="/records"
-         style="cursor: pointer;">
+    <div class="nav-item" routerLink="/records" style="cursor: pointer;">
       <ion-icon name="document-text-outline"></ion-icon>
-      <span> Records </span>
+      <span>Records</span>
     </div>
 
-    <div class="nav-item add-nav"
-         routerLink="/add-medicine"
-         style="cursor: pointer;">
+    <div class="nav-item add-nav" routerLink="/add-medicine" style="cursor: pointer;">
       <div class="add-button">
         <ion-icon name="add"></ion-icon>
       </div>
     </div>
 
-    <div class="nav-item"
-         routerLink="/history"
-         style="cursor: pointer;">
+    <div class="nav-item" routerLink="/history" style="cursor: pointer;">
       <ion-icon name="time-outline"></ion-icon>
-      <span> History </span>
+      <span>History</span>
     </div>
 
-    <div class="nav-item active"
-         routerLink="/settings"
-         style="cursor: pointer;">
+    <div class="nav-item active" routerLink="/settings" style="cursor: pointer;">
       <ion-icon name="settings-outline"></ion-icon>
-      <span> Settings </span>
+      <span>Settings</span>
     </div>
 
   </div>
-
 </ion-content>

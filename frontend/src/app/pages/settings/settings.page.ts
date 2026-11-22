@@ -1,13 +1,18 @@
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+
 import {
   AlertController,
   IonContent,
-  IonIcon
+  IonIcon,
+  IonLabel
 } from '@ionic/angular';
+
 import { addIcons } from 'ionicons';
+
 import {
   personOutline,
   chevronForwardOutline,
@@ -18,25 +23,49 @@ import {
   documentTextOutline,
   add,
   timeOutline,
-  settingsOutline
+  settingsOutline,
+  eyeOutline,
+  eyeOffOutline
 } from 'ionicons/icons';
+
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
-  imports: [CommonModule, RouterLink, IonContent, IonIcon],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink,
+    IonContent,
+    IonIcon,
+    IonLabel
+  ],
 })
 export class SettingsPage {
 
   fullName: string = '';
-  
+
+  // CHANGE PASSWORD MODAL
+  showChangePasswordModal = false;
+
+  currentPassword = '';
+  newPassword = '';
+  confirmPassword = '';
+
+  // PASSWORD VISIBILITY
+  showCurrentPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
+
   constructor(
     private alertController: AlertController,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
+
     addIcons({
       personOutline,
       chevronForwardOutline,
@@ -47,7 +76,9 @@ export class SettingsPage {
       documentTextOutline,
       add,
       timeOutline,
-      settingsOutline
+      settingsOutline,
+      eyeOutline,
+      eyeOffOutline
     });
 
     const user = this.authService.getCurrentUser();
@@ -60,6 +91,7 @@ export class SettingsPage {
   }
 
   async openProfile() {
+
     const user = this.authService.getCurrentUser();
 
     const alert = await this.alertController.create({
@@ -73,74 +105,92 @@ export class SettingsPage {
     await alert.present();
   }
 
-  async changePassword() {
-    const alert = await this.alertController.create({
-      header: 'Change Password',
-      inputs: [
-        {
-          name: 'currentPassword',
-          type: 'password',
-          placeholder: 'Current Password'
-        },
-        {
-          name: 'newPassword',
-          type: 'password',
-          placeholder: 'New Password'
-        },
-        {
-          name: 'confirmPassword',
-          type: 'password',
-          placeholder: 'Confirm New Password'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        },
-        {
-          text: 'Change Password',
-          handler: (data) => {
-            if (!data.currentPassword || !data.newPassword || !data.confirmPassword) {
-              this.showMessage('Error', 'Please fill in all fields.');
-              return false;
-            }
+  // OPEN CHANGE PASSWORD MODAL
+  changePassword() {
 
-            if (data.newPassword.length < 8) {
-              this.showMessage('Error', 'New password must be at least 8 characters.');
-              return false;
-            }
+    this.currentPassword = '';
+    this.newPassword = '';
+    this.confirmPassword = '';
 
-            if (data.newPassword !== data.confirmPassword) {
-              this.showMessage('Error', 'New passwords do not match.');
-              return false;
-            }
+    this.showCurrentPassword = false;
+    this.showNewPassword = false;
+    this.showConfirmPassword = false;
 
-            this.authService.changePassword({
-              currentPassword: data.currentPassword,
-              newPassword: data.newPassword
-            }).subscribe({
-              next: () => {
-                this.showMessage('Success', 'Password changed successfully.');
-              },
-              error: (error) => {
-                this.showMessage(
-                  'Error',
-                  error.error?.detail || 'Unable to change password.'
-                );
-              }
-            });
+    this.showChangePasswordModal = true;
+  }
 
-            return true;
-          }
-        }
-      ]
+  // CLOSE CHANGE PASSWORD MODAL
+  closeChangePassword() {
+
+    this.showChangePasswordModal = false;
+
+    this.currentPassword = '';
+    this.newPassword = '';
+    this.confirmPassword = '';
+  }
+
+  // SUBMIT NEW PASSWORD
+  submitPasswordChange() {
+
+    if (
+      !this.currentPassword ||
+      !this.newPassword ||
+      !this.confirmPassword
+    ) {
+      this.showMessage('Error', 'Please fill in all fields.');
+      return;
+    }
+
+    if (this.newPassword.length < 8) {
+      this.showMessage(
+        'Error',
+        'New password must be at least 8 characters.'
+      );
+      return;
+    }
+
+    if (this.newPassword !== this.confirmPassword) {
+      this.showMessage(
+        'Error',
+        'New passwords do not match.'
+      );
+      return;
+    }
+
+    this.authService.changePassword({
+      currentPassword: this.currentPassword,
+      newPassword: this.newPassword
+    }).subscribe({
+
+      next: async () => {
+        const alert = await this.alertController.create({
+          header: 'Success',
+          message: 'Password changed successfully.',
+          buttons: ['OK']
+        });
+
+        await alert.present();
+        await alert.onDidDismiss();
+
+        this.closeChangePassword();
+        this.cdr.detectChanges();
+      },
+
+      error: (error) => {
+
+        this.showMessage(
+          'Error',
+          error.error?.detail || 'Unable to change password.'
+        );
+
+      }
+
     });
 
-    await alert.present();
   }
 
   async showAbout() {
+
     const alert = await this.alertController.create({
       header: 'About Application',
       subHeader: 'Medicine Intake Monitoring Application',
@@ -156,6 +206,7 @@ export class SettingsPage {
   }
 
   async logout() {
+
     const alert = await this.alertController.create({
       header: 'Log Out',
       message: 'Are you sure you want to log out?',
@@ -178,6 +229,7 @@ export class SettingsPage {
   }
 
   async showMessage(header: string, message: string) {
+
     const alert = await this.alertController.create({
       header,
       message,
@@ -186,4 +238,5 @@ export class SettingsPage {
 
     await alert.present();
   }
+
 }

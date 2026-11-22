@@ -1,4 +1,5 @@
 import type { Routes } from '@angular/router';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
   {
@@ -24,30 +25,37 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/dashboard/dashboard.page').then((m) => m.DashboardPage),
   },
   {
     path: 'records',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/records/records.page').then((m) => m.RecordsPage),
   },
   {
     path: 'add-medicine',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/add-medicine/add-medicine.page').then((m) => m.AddMedicinePage),
   },
   {
     path: 'history',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/history/history.page').then((m) => m.HistoryPage),
   },
   {
     path: 'settings',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/settings/settings.page').then((m) => m.SettingsPage),
   },
   {
     path: 'medicine-details/:id',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/medicine-details/medicine-details.page').then((m) => m.MedicineDetailsPage),
   },
   {
     path: 'edit-medicine/:id',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/edit-medicine/edit-medicine.page').then((m) => m.EditMedicinePage),
   },
 ];

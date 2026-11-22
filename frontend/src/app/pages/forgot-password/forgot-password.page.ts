@@ -1,3 +1,4 @@
+
 import { Router, RouterLink } from '@angular/router';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -7,8 +8,12 @@ import {
   IonLabel,
   IonInput,
   IonButton,
+  IonIcon,
   AlertController
 } from '@ionic/angular';
+
+import { addIcons } from 'ionicons';
+import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
 
 import { AuthService } from '../../services/auth.service';
 
@@ -23,7 +28,8 @@ import { AuthService } from '../../services/auth.service';
     IonContent,
     IonLabel,
     IonInput,
-    IonButton
+    IonButton,
+    IonIcon
   ],
 })
 export class ForgotPasswordPage {
@@ -35,11 +41,19 @@ export class ForgotPasswordPage {
   newPassword = '';
   confirmPassword = '';
 
+  showNewPassword = false;
+  showConfirmPassword = false;
+
   constructor(
     private authService: AuthService,
     private alertController: AlertController,
     private router: Router
-  ) {}
+  ) {
+    addIcons({
+      eyeOutline,
+      eyeOffOutline
+    });
+  }
 
   resetPassword() {
 
@@ -82,13 +96,11 @@ export class ForgotPasswordPage {
 
       next: async (response) => {
 
-        // CLEAR FORGOT PASSWORD FORM
         this.username = '';
         this.recoveryCode = '';
         this.newPassword = '';
         this.confirmPassword = '';
 
-        // FIRST ALERT: PASSWORD RESET SUCCESSFUL
         const successAlert = await this.alertController.create({
           header: 'Password Reset Successful',
           message: response.message,
@@ -98,7 +110,6 @@ export class ForgotPasswordPage {
         await successAlert.present();
         await successAlert.onDidDismiss();
 
-        // SECOND ALERT: SHOW NEW RECOVERY CODE
         const recoveryAlert = await this.alertController.create({
           header: 'Your New Recovery Code',
           subHeader: response.recoveryCode,
@@ -120,6 +131,7 @@ export class ForgotPasswordPage {
 
       error: (error) => {
         const message =
+          error.error?.detail ||
           error.error?.message ||
           'Unable to reset password. Please try again.';
 

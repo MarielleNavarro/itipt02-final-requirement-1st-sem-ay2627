@@ -60,3 +60,8 @@ ion-alert.recovery-code-alert .alert-message {
   text-align: center;
   margin-top: 14px;
 }
+
+ion-input::part(native)::-ms-reveal,
+ion-input::part(native)::-ms-clear {
+  display: none !important;
+}

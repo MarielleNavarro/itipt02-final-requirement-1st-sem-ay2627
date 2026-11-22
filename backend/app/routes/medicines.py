@@ -148,6 +148,7 @@ def get_medicines(current_user: dict = Depends(get_current_user)):
     cursor = connection.cursor(dictionary=True)
 
     try:
+        # GET ALL MEDICINES
         cursor.execute(
             """
             SELECT * FROM medicines
@@ -158,6 +159,40 @@ def get_medicines(current_user: dict = Depends(get_current_user)):
         )
 
         medicines = cursor.fetchall()
+
+        # GET ALL INTAKE TIMES
+        cursor.execute(
+            """
+            SELECT
+                medicine_id,
+                TIME_FORMAT(intake_time, '%H:%i') AS intake_time
+            FROM medicine_schedules
+            WHERE user_id = %s
+            ORDER BY medicine_id, intake_time ASC
+            """,
+            (current_user["id"],)
+        )
+
+        schedules = cursor.fetchall()
+
+        # GROUP INTAKE TIMES BY MEDICINE ID
+        intake_times_by_medicine = {}
+
+        for schedule in schedules:
+            medicine_id = schedule["medicine_id"]
+
+            if medicine_id not in intake_times_by_medicine:
+                intake_times_by_medicine[medicine_id] = []
+
+            intake_times_by_medicine[medicine_id].append(
+                schedule["intake_time"]
+            )
+
+        # ATTACH INTAKE TIMES TO EACH MEDICINE
+        for medicine in medicines:
+            medicine["intake_times"] = intake_times_by_medicine.get(
+                medicine["id"], []
+            )
 
         return {
             "message": "Medicines retrieved successfully.",
@@ -247,6 +282,26 @@ def get_medicine(
         if not medicine:
             raise HTTPException(status_code=404, detail="Medicine not found.")
 
+        # GET EXISTING INTAKE TIMES
+        cursor.execute(
+            """
+            SELECT intake_time
+            FROM medicine_schedules
+            WHERE medicine_id = %s AND user_id = %s
+            ORDER BY intake_time ASC
+            """,
+            (medicine_id, current_user["id"])
+        )
+
+        schedules = cursor.fetchall()
+
+        medicine["intake_times"] = [
+            schedule["intake_time"].strftime("%H:%M")
+            if hasattr(schedule["intake_time"], "strftime")
+            else str(schedule["intake_time"])[:5]
+            for schedule in schedules
+        ]
+
         return {
             "message": "Medicine retrieved successfully.",
             "medicine": medicine
@@ -257,6 +312,7 @@ def get_medicine(
         connection.close()
 
 
+
 @router.put("/{medicine_id}")
 async def update_medicine(
     medicine_id: int,
@@ -265,8 +321,8 @@ async def update_medicine(
     category: str = Form(None),
     reason: str = Form(None),
     start_date: str = Form(None),
-    end_date: str = Form(None),
-    notes: str = Form(None),
+    end_date: str = Form(""),
+    notes: str = Form(""),
     intake_times: str = Form(None),
     image: UploadFile = File(None),
     current_user: dict = Depends(get_current_user)

@@ -70,4 +70,29 @@ export class MedicineDetailsPage {
     return this.medicineService.getImageUrl(image);
   }
 
+  // CONVERT 24-HOUR TIME TO 12-HOUR FORMAT
+  formatIntakeTime(time: string): string {
+    const [hours, minutes] = time.substring(0, 5).split(':');
+
+    let hour = Number(hours);
+    const period = hour >= 12 ? 'PM' : 'AM';
+
+    if (hour === 0) {
+      hour = 12;
+    } else if (hour > 12) {
+      hour -= 12;
+    }
+
+    return `${hour}:${minutes} ${period}`;
+  }
+
+  // GET ALL INTAKE TIMES
+  getFormattedIntakeTimes(): string {
+    const times = this.medicine?.intake_times || [];
+
+    return times
+      .map(time => this.formatIntakeTime(time))
+      .join(', ');
+  }
+
 }

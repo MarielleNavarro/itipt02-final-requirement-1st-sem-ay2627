@@ -86,6 +86,11 @@
             <h3>{{ medicine.medicine_name }}</h3>
             <p>{{ medicine.dosage }}</p>
 
+            <p>
+              <strong>Intake Time:</strong>
+              {{ getFormattedIntakeTimes(medicine) || 'No intake schedule' }}
+            </p>
+
             <span class="history-date">
               {{ medicine.start_date | date:'MMM d, yyyy' }}
               -
