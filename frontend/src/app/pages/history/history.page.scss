@@ -80,13 +80,25 @@ ion-content {
   }
 }
 
-// INTAKE SUB-FILTERS
+// INTAKE FILTER TOOLBAR
+.intake-filter-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 17px;
+  width: 100%;
+}
+
+// INTAKE STATUS FILTERS - LEFT
 .intake-filters {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 5px;
+  flex: 0 1 auto;
+  min-width: 0;
   overflow-x: auto;
-  padding: 2px 0 16px;
-  margin-bottom: 5px;
+  padding: 2px 0;
   scrollbar-width: none;
 
   &::-webkit-scrollbar {
@@ -95,14 +107,14 @@ ion-content {
 }
 
 .intake-filter-button {
-  flex: 1;
-  min-width: 65px;
+  flex: 0 0 auto;
+  min-width: auto;
   border: 1px solid #e8def3;
   background: #ffffff;
   color: #82768f;
   border-radius: 20px;
-  padding: 9px 12px;
-  font-size: 11px;
+  padding: 8px 11px;
+  font-size: 10px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -111,6 +123,32 @@ ion-content {
   background: #eee8ff;
   border-color: #8056bd;
   color: #8056bd;
+}
+
+// DATE FILTER - RIGHT
+.date-filter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+
+  label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #82768f;
+  }
+
+  input {
+    width: 115px;
+    height: 34px;
+    padding: 0 5px;
+    border: 1px solid #e8def3;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #82768f;
+    font-size: 10px;
+    cursor: pointer;
+  }
 }
 
 // HISTORY LIST
@@ -328,5 +366,24 @@ ion-content {
   .status-badge {
     font-size: 9px;
     padding: 6px 7px;
+  }
+
+    .intake-filter-toolbar {
+    gap: 5px;
+  }
+
+  .intake-filters {
+    gap: 4px;
+  }
+
+  .intake-filter-button {
+    padding: 7px 8px;
+    font-size: 9px;
+  }
+
+  .date-filter-control {
+    gap: 3px;
+    padding: 7px 6px;
+    font-size: 9px;
   }
 }

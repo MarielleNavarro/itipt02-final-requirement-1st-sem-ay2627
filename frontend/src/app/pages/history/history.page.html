@@ -114,36 +114,52 @@
         <span>{{ filteredIntakeHistory.length }} records</span>
       </div>
 
-      <!-- INTAKE SUB-FILTERS -->
-      <div class="intake-filters">
+      <!-- INTAKE FILTERS AND DATE FILTER -->
+      <div class="intake-filter-toolbar">
 
-        <button
-          class="intake-filter-button"
-          [class.active]="selectedIntakeFilter === 'All'"
-          (click)="setIntakeFilter('All')">
-          All
-        </button>
+        <!-- LEFT: STATUS SUB-FILTERS -->
+        <div class="intake-filters">
 
-        <button
-          class="intake-filter-button"
-          [class.active]="selectedIntakeFilter === 'Taken'"
-          (click)="setIntakeFilter('Taken')">
-          Taken
-        </button>
+          <button
+            class="intake-filter-button"
+            [class.active]="selectedIntakeFilter === 'All'"
+            (click)="setIntakeFilter('All')">
+            All
+          </button>
 
-        <button
-          class="intake-filter-button"
-          [class.active]="selectedIntakeFilter === 'Missed'"
-          (click)="setIntakeFilter('Missed')">
-          Missed
-        </button>
+          <button
+            class="intake-filter-button"
+            [class.active]="selectedIntakeFilter === 'Taken'"
+            (click)="setIntakeFilter('Taken')">
+            Taken
+          </button>
 
-        <button
-          class="intake-filter-button"
-          [class.active]="selectedIntakeFilter === 'Skipped'"
-          (click)="setIntakeFilter('Skipped')">
-          Skipped
-        </button>
+          <button
+            class="intake-filter-button"
+            [class.active]="selectedIntakeFilter === 'Missed'"
+            (click)="setIntakeFilter('Missed')">
+            Missed
+          </button>
+
+          <button
+            class="intake-filter-button"
+            [class.active]="selectedIntakeFilter === 'Skipped'"
+            (click)="setIntakeFilter('Skipped')">
+            Skipped
+          </button>
+
+        </div>
+
+        <!-- RIGHT: DATE FILTER -->
+        <div class="date-filter">
+          <label for="intakeDate">Date:</label>
+
+          <input
+            type="date"
+            id="intakeDate"
+            [(ngModel)]="selectedDate"
+          />
+        </div>
 
       </div>
 
@@ -198,7 +214,7 @@
 
     <div class="nav-item" routerLink="/dashboard" style="cursor: pointer;">
       <ion-icon name="home-outline"></ion-icon>
-      <span>Home</span>
+      <span>Dashboard</span>
     </div>
 
     <div class="nav-item" routerLink="/records" style="cursor: pointer;">

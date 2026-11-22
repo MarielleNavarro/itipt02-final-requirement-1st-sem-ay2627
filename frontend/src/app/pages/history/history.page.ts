@@ -1,6 +1,7 @@
 
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { addIcons } from 'ionicons';
@@ -20,7 +21,7 @@ import { HistoryService, MedicineHistory } from '../../services/history.service'
   selector: 'app-history',
   templateUrl: './history.page.html',
   styleUrls: ['./history.page.scss'],
-  imports: [CommonModule, RouterLink, IonContent, IonIcon],
+  imports: [CommonModule, FormsModule, RouterLink, IonContent, IonIcon],
 })
 export class HistoryPage {
 
@@ -29,6 +30,7 @@ export class HistoryPage {
 
   selectedFilter: string = 'All';
   selectedIntakeFilter: string = 'All';
+  selectedDate: string = '';
 
   isLoading = true;
   errorMessage = '';
@@ -49,6 +51,9 @@ export class HistoryPage {
   }
 
   ionViewWillEnter() {
+    this.selectedFilter = 'All';
+    this.selectedIntakeFilter = 'All';
+
     this.loadMedicines();
     this.loadIntakeHistory();
   }
@@ -133,13 +138,17 @@ export class HistoryPage {
 
   // FILTER INTAKE HISTORY
   get filteredIntakeHistory(): MedicineHistory[] {
-    if (this.selectedIntakeFilter === 'All') {
-      return this.intakeHistory;
-    }
+    return this.intakeHistory.filter(record => {
+      const matchesStatus =
+        this.selectedIntakeFilter === 'All' ||
+        record.status === this.selectedIntakeFilter;
 
-    return this.intakeHistory.filter(
-      record => record.status === this.selectedIntakeFilter
-    );
+      const matchesDate =
+        this.selectedDate === '' ||
+        String(record.intake_date).slice(0, 10) === this.selectedDate;
+
+      return matchesStatus && matchesDate;
+    });
   }
 
   // LOAD ACTUAL MEDICINE INTAKE HISTORY
