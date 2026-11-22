@@ -6,77 +6,146 @@ ion-content {
 .history-container {
   min-height: 100%;
   box-sizing: border-box;
-  padding: 18px 17px 90px;
+  padding: 22px 18px 100px;
 }
 
-// page header
+// PAGE HEADER
 .page-header {
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 
   h1 {
     font-size: 25px;
-    font-weight: 700;
+    font-weight: 750;
+    letter-spacing: -0.5px;
     color: #50377d;
+    margin: 0 0 6px;
+  }
+
+  p {
+    font-size: 12px;
+    color: #968aa7;
     margin: 0;
   }
 }
 
-// history filters
+// MAIN FILTERS
 .history-filters {
   display: flex;
-  gap: 10px;
-  margin-bottom: 22px;
+  gap: 7px;
+  margin-bottom: 25px;
+  padding: 5px;
+  background: #f0eafb;
+  border-radius: 15px;
 }
 
 .filter-button {
   flex: 1;
-  border: 1px solid #e8def3;
-  background: #ffffff;
-  color: #82768f;
-  border-radius: 20px;
-  padding: 10px 8px;
-  font-size: 12px;
+  border: none;
+  background: transparent;
+  color: #857895;
+  border-radius: 11px;
+  padding: 11px 5px;
+  font-size: 11px;
+  font-weight: 600;
   white-space: nowrap;
 }
 
 .filter-button.active {
   background: #8056bd;
-  border-color: #8056bd;
   color: #ffffff;
+  box-shadow: 0 3px 8px rgba(91, 61, 130, 0.16);
 }
 
-// history list
+// SECTION HEADING
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+
+  h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #50377d;
+    margin: 0;
+  }
+
+  span {
+    font-size: 11px;
+    font-weight: 600;
+    color: #9587a8;
+    background: #eee8f8;
+    padding: 6px 10px;
+    border-radius: 20px;
+  }
+}
+
+// INTAKE SUB-FILTERS
+.intake-filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 0 16px;
+  margin-bottom: 5px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.intake-filter-button {
+  flex: 1;
+  min-width: 65px;
+  border: 1px solid #e8def3;
+  background: #ffffff;
+  color: #82768f;
+  border-radius: 20px;
+  padding: 9px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.intake-filter-button.active {
+  background: #eee8ff;
+  border-color: #8056bd;
+  color: #8056bd;
+}
+
+// HISTORY LIST
 .history-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
-// history card
+// HISTORY CARD
 .history-card {
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: 13px;
   background: #ffffff;
-  border: 1px solid #e8def3;
-  border-radius: 13px;
-  padding: 12px;
-  box-shadow: 0 3px 10px rgba(91, 61, 130, 0.07);
+  border: 1px solid #eee7f6;
+  border-radius: 17px;
+  padding: 14px;
+  box-shadow: 0 4px 14px rgba(91, 61, 130, 0.055);
 }
 
-// medicine image
+// MEDICINE IMAGE
 .medicine-image {
-  width: 52px;
-  height: 52px;
+  width: 58px;
+  height: 58px;
   flex-shrink: 0;
-  background: #eee9ff;
-  border-radius: 10px;
+  background: #f0eafb;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 
   ion-icon {
-    font-size: 26px;
+    font-size: 29px;
     color: #8056bd;
   }
 
@@ -84,55 +153,91 @@ ion-content {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 9px;
+    border-radius: 14px;
   }
 }
 
-// medicine information
+// MEDICINE INFORMATION
 .history-info {
   flex: 1;
   min-width: 0;
 
   h3 {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     color: #35264d;
-    margin: 0 0 4px;
+    margin: 0 0 5px;
+    overflow-wrap: anywhere;
   }
 
   p {
-    font-size: 11px;
+    font-size: 12px;
     color: #82768f;
-    margin: 0 0 5px;
+    margin: 0 0 6px;
   }
 
   .history-date {
-    font-size: 10px;
-    color: #9388a5;
+    display: inline-block;
+    font-size: 11px;
+    color: #a096ae;
   }
 }
 
-// status badges
+// STATUS BADGES
 .status-badge {
   display: inline-block;
   flex-shrink: 0;
-  font-size: 9px;
-  font-weight: 600;
-  padding: 6px 8px;
-  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 7px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
 }
 
-.status-badge.completed {
-  background: #e5f7f2;
-  color: #16a879;
+.status-badge.completed,
+.status-badge.taken {
+  background: #e5f7f0;
+  color: #189b70;
 }
 
 .status-badge.ongoing {
-  background: #eee9ff;
+  background: #eee8ff;
   color: #8056bd;
 }
 
-// bottom navigation
+.status-badge.missed {
+  background: #fff0ef;
+  color: #df6262;
+}
+
+.status-badge.skipped {
+  background: #fff5e5;
+  color: #c58a32;
+}
+
+// EMPTY STATE
+.empty-history {
+  background: #ffffff;
+  border: 1px dashed #e3d8f0;
+  border-radius: 16px;
+  padding: 30px 15px;
+  text-align: center;
+  margin-top: 5px;
+
+  ion-icon {
+    font-size: 34px;
+    color: #b5a2d0;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 12px;
+    color: #9589a5;
+    margin: 0;
+  }
+}
+
+// BOTTOM NAVIGATION
 .bottom-navigation {
   position: fixed;
   bottom: 0;
@@ -172,7 +277,7 @@ ion-content {
   color: #82218b;
 }
 
-// add button
+// ADD BUTTON
 .add-nav {
   position: relative;
 }
@@ -194,25 +299,34 @@ ion-content {
   }
 }
 
-// small screens
+// SMALL SCREENS
 @media (max-width: 360px) {
   .history-container {
     padding-left: 13px;
     padding-right: 13px;
   }
 
+  .history-filters {
+    gap: 4px;
+  }
+
+  .filter-button {
+    font-size: 10px;
+    padding: 10px 3px;
+  }
+
   .history-card {
-    gap: 8px;
-    padding: 10px;
+    gap: 9px;
+    padding: 11px;
   }
 
   .medicine-image {
-    width: 46px;
-    height: 46px;
+    width: 49px;
+    height: 49px;
   }
 
   .status-badge {
-    font-size: 8px;
-    padding: 5px 6px;
+    font-size: 9px;
+    padding: 6px 7px;
   }
 }

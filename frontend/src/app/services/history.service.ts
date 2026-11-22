@@ -10,6 +10,7 @@ export interface MedicineHistory {
   user_id: number;
   medicine_id: number;
   medicine_name: string;
+  image: string | null;
   intake_date: string;
   intake_time: string;
   status: 'Taken' | 'Missed' | 'Skipped';

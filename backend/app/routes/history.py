@@ -144,7 +144,8 @@ def get_history(current_user: dict = Depends(get_current_user)):
             """
             SELECT
                 h.*,
-                m.medicine_name
+                m.medicine_name,
+                m.image
             FROM medicine_history h
             JOIN medicines m ON m.id = h.medicine_id
             WHERE h.user_id = %s
@@ -166,6 +167,7 @@ def get_history(current_user: dict = Depends(get_current_user)):
     finally:
         cursor.close()
         connection.close()
+
 
 
 @router.get("/today-schedules")
@@ -290,7 +292,10 @@ def get_one_history(
     try:
         cursor.execute(
             """
-            SELECT h.*, m.medicine_name
+            SELECT 
+                h.*, 
+                m.medicine_name,
+                m.image
             FROM medicine_history h
             JOIN medicines m ON m.id = h.medicine_id
             WHERE h.id = %s AND h.user_id = %s

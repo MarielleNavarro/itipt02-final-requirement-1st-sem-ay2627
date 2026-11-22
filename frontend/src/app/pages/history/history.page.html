@@ -5,11 +5,11 @@
     <!-- PAGE HEADER -->
     <div class="page-header">
       <h1>Medicine History</h1>
+      <p>Keep track of your medicines and intake records.</p>
     </div>
 
-    <!-- HISTORY FILTERS -->
+    <!-- MAIN HISTORY FILTERS -->
     <div class="history-filters">
-
       <button
         class="filter-button"
         [class.active]="selectedFilter === 'All'"
@@ -31,6 +31,12 @@
         Completed
       </button>
 
+      <button
+        class="filter-button"
+        [class.active]="selectedFilter === 'Intake'"
+        (click)="setFilter('Intake')">
+        Intake
+      </button>
     </div>
 
     <!-- LOADING -->
@@ -43,96 +49,178 @@
       <p>{{ errorMessage }}</p>
     </div>
 
-    <!-- EMPTY HISTORY -->
-    <div *ngIf="!isLoading && !errorMessage && filteredMedicines.length === 0">
-      <p>No medicine history found.</p>
-    </div>
+    <!-- MEDICINE RECORDS -->
+    <ng-container *ngIf="!isLoading && !errorMessage && selectedFilter !== 'Intake'">
 
-    <!-- MEDICINE HISTORY LIST -->
-    <div class="history-list" *ngIf="!isLoading && !errorMessage">
+      <div class="section-heading">
+        <h2>
+          {{ selectedFilter === 'All' ? 'All Medicines' : selectedFilter + ' Medicines' }}
+        </h2>
+        <span>{{ filteredMedicines.length }} records</span>
+      </div>
 
-      <div
-        class="history-card"
-        *ngFor="let medicine of filteredMedicines">
+      <!-- EMPTY MEDICINE RECORDS -->
+      <div *ngIf="filteredMedicines.length === 0" class="empty-history">
+        <ion-icon name="medkit-outline"></ion-icon>
+        <p>No medicine records found.</p>
+      </div>
 
-        <div class="medicine-image">
-          <img
-            *ngIf="medicine.image; else defaultHistoryMedicineIcon"
-            [src]="getMedicineImage(medicine.image)"
-            [alt]="medicine.medicine_name"
-          />
+      <!-- MEDICINE LIST -->
+      <div class="history-list" *ngIf="filteredMedicines.length > 0">
 
-          <ng-template #defaultHistoryMedicineIcon>
-            <ion-icon name="medkit-outline"></ion-icon>
-          </ng-template>
-        </div>
+        <div class="history-card" *ngFor="let medicine of filteredMedicines">
 
-        <div class="history-info">
-          <h3>{{ medicine.medicine_name }}</h3>
+          <div class="medicine-image">
+            <img
+              *ngIf="medicine.image; else defaultMedicineIcon"
+              [src]="getMedicineImage(medicine.image)"
+              [alt]="medicine.medicine_name"
+            />
 
-          <p>{{ medicine.dosage }}</p>
+            <ng-template #defaultMedicineIcon>
+              <ion-icon name="medkit-outline"></ion-icon>
+            </ng-template>
+          </div>
 
-          <span class="history-date">
-            {{ medicine.start_date | date:'MMM d, yyyy' }}
-            -
-            {{ medicine.end_date
-              ? (medicine.end_date | date:'MMM d, yyyy')
-              : 'Ongoing' }}
+          <div class="history-info">
+            <h3>{{ medicine.medicine_name }}</h3>
+            <p>{{ medicine.dosage }}</p>
+
+            <span class="history-date">
+              {{ medicine.start_date | date:'MMM d, yyyy' }}
+              -
+              {{ medicine.end_date
+                ? (medicine.end_date | date:'MMM d, yyyy')
+                : 'Ongoing' }}
+            </span>
+          </div>
+
+          <span class="status-badge"
+            [class.ongoing]="getMedicineStatus(medicine) === 'Ongoing'"
+            [class.completed]="getMedicineStatus(medicine) === 'Completed'">
+            {{ getMedicineStatus(medicine) }}
           </span>
-        </div>
 
-        <span
-          class="status-badge"
-          [class.ongoing]="getMedicineStatus(medicine) === 'Ongoing'"
-          [class.completed]="getMedicineStatus(medicine) === 'Completed'">
-          {{ getMedicineStatus(medicine) }}
-        </span>
+        </div>
+      </div>
+
+    </ng-container>
+
+    <!-- INTAKE RECORDS -->
+    <ng-container *ngIf="!isLoading && !errorMessage && selectedFilter === 'Intake'">
+
+      <div class="section-heading">
+        <h2>Intake Records</h2>
+        <span>{{ filteredIntakeHistory.length }} records</span>
+      </div>
+
+      <!-- INTAKE SUB-FILTERS -->
+      <div class="intake-filters">
+
+        <button
+          class="intake-filter-button"
+          [class.active]="selectedIntakeFilter === 'All'"
+          (click)="setIntakeFilter('All')">
+          All
+        </button>
+
+        <button
+          class="intake-filter-button"
+          [class.active]="selectedIntakeFilter === 'Taken'"
+          (click)="setIntakeFilter('Taken')">
+          Taken
+        </button>
+
+        <button
+          class="intake-filter-button"
+          [class.active]="selectedIntakeFilter === 'Missed'"
+          (click)="setIntakeFilter('Missed')">
+          Missed
+        </button>
+
+        <button
+          class="intake-filter-button"
+          [class.active]="selectedIntakeFilter === 'Skipped'"
+          (click)="setIntakeFilter('Skipped')">
+          Skipped
+        </button>
 
       </div>
 
-    </div>
+      <!-- EMPTY INTAKE RECORDS -->
+      <div *ngIf="filteredIntakeHistory.length === 0" class="empty-history">
+        <ion-icon name="time-outline"></ion-icon>
+        <p>No {{ selectedIntakeFilter === 'All' ? '' : selectedIntakeFilter.toLowerCase() + ' ' }}intake records found.</p>
+      </div>
+
+      <!-- INTAKE HISTORY LIST -->
+      <div class="history-list" *ngIf="filteredIntakeHistory.length > 0">
+
+        <div class="history-card" *ngFor="let record of filteredIntakeHistory">
+
+          <div class="medicine-image">
+            <img
+              *ngIf="record.image; else defaultIntakeMedicineIcon"
+              [src]="getMedicineImage(record.image)"
+              [alt]="record.medicine_name"
+            />
+
+            <ng-template #defaultIntakeMedicineIcon>
+              <ion-icon name="medkit-outline"></ion-icon>
+            </ng-template>
+          </div>
+
+          <div class="history-info">
+            <h3>{{ record.medicine_name }}</h3>
+            <p>{{ record.intake_date | date:'MMM d, yyyy' }}</p>
+
+            <span class="history-date">
+              {{ record.intake_time.substring(0, 5) }}
+            </span>
+          </div>
+
+          <span class="status-badge"
+            [class.taken]="record.status === 'Taken'"
+            [class.missed]="record.status === 'Missed'"
+            [class.skipped]="record.status === 'Skipped'">
+            {{ record.status }}
+          </span>
+
+        </div>
+      </div>
+
+    </ng-container>
 
   </div>
 
   <!-- BOTTOM NAVIGATION -->
   <div class="bottom-navigation">
 
-    <div class="nav-item"
-         routerLink="/dashboard"
-         style="cursor: pointer;">
+    <div class="nav-item" routerLink="/dashboard" style="cursor: pointer;">
       <ion-icon name="home-outline"></ion-icon>
       <span>Home</span>
     </div>
 
-    <div class="nav-item"
-         routerLink="/records"
-         style="cursor: pointer;">
+    <div class="nav-item" routerLink="/records" style="cursor: pointer;">
       <ion-icon name="document-text-outline"></ion-icon>
       <span>Records</span>
     </div>
 
-    <div class="nav-item add-nav"
-         routerLink="/add-medicine"
-         style="cursor: pointer;">
+    <div class="nav-item add-nav" routerLink="/add-medicine" style="cursor: pointer;">
       <div class="add-button">
         <ion-icon name="add"></ion-icon>
       </div>
     </div>
 
-    <div class="nav-item active"
-         routerLink="/history"
-         style="cursor: pointer;">
+    <div class="nav-item active" routerLink="/history" style="cursor: pointer;">
       <ion-icon name="time-outline"></ion-icon>
       <span>History</span>
     </div>
 
-    <div class="nav-item"
-         routerLink="/settings"
-         style="cursor: pointer;">
+    <div class="nav-item" routerLink="/settings" style="cursor: pointer;">
       <ion-icon name="settings-outline"></ion-icon>
       <span>Settings</span>
     </div>
 
   </div>
-
 </ion-content>

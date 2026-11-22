@@ -14,6 +14,7 @@ import {
 } from 'ionicons/icons';
 
 import { Medicine, MedicineService } from '../../services/medicine.service';
+import { HistoryService, MedicineHistory } from '../../services/history.service';
 
 @Component({
   selector: 'app-history',
@@ -24,14 +25,17 @@ import { Medicine, MedicineService } from '../../services/medicine.service';
 export class HistoryPage {
 
   medicines: Medicine[] = [];
+  intakeHistory: MedicineHistory[] = [];
 
   selectedFilter: string = 'All';
+  selectedIntakeFilter: string = 'All';
 
   isLoading = true;
   errorMessage = '';
 
   constructor(
     private medicineService: MedicineService,
+    private historyService: HistoryService,
     private cdr: ChangeDetectorRef
   ) {
     addIcons({
@@ -46,6 +50,7 @@ export class HistoryPage {
 
   ionViewWillEnter() {
     this.loadMedicines();
+    this.loadIntakeHistory();
   }
 
   // LOAD MEDICINES
@@ -72,9 +77,19 @@ export class HistoryPage {
     });
   }
 
-  // SELECT FILTER
+  // SELECT MAIN FILTER
   setFilter(filter: string) {
     this.selectedFilter = filter;
+
+    // Reset intake sub-filter when leaving Intake
+    if (filter !== 'Intake') {
+      this.selectedIntakeFilter = 'All';
+    }
+  }
+
+  // SELECT INTAKE SUB-FILTER
+  setIntakeFilter(filter: string) {
+    this.selectedIntakeFilter = filter;
   }
 
   // CHECK MEDICINE STATUS
@@ -114,6 +129,32 @@ export class HistoryPage {
     return this.medicines.filter(
       medicine => this.getMedicineStatus(medicine) === this.selectedFilter
     );
+  }
+
+  // FILTER INTAKE HISTORY
+  get filteredIntakeHistory(): MedicineHistory[] {
+    if (this.selectedIntakeFilter === 'All') {
+      return this.intakeHistory;
+    }
+
+    return this.intakeHistory.filter(
+      record => record.status === this.selectedIntakeFilter
+    );
+  }
+
+  // LOAD ACTUAL MEDICINE INTAKE HISTORY
+  loadIntakeHistory() {
+    this.historyService.getHistory().subscribe({
+      next: (response) => {
+        this.intakeHistory = response.history || [];
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error loading intake history:', error);
+        this.intakeHistory = [];
+        this.cdr.detectChanges();
+      }
+    });
   }
 
 }
