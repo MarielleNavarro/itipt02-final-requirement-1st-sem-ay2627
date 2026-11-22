@@ -1,3 +1,4 @@
+
 import { Router, RouterLink } from '@angular/router';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -7,8 +8,12 @@ import {
   IonLabel,
   IonInput,
   IonButton,
+  IonIcon,
   AlertController
 } from '@ionic/angular';
+
+import { addIcons } from 'ionicons';
+import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
 
 import { AuthService } from '../../services/auth.service';
 
@@ -23,7 +28,8 @@ import { AuthService } from '../../services/auth.service';
     IonContent,
     IonLabel,
     IonInput,
-    IonButton
+    IonButton,
+    IonIcon
   ],
 })
 export class SignupPage {
@@ -33,14 +39,33 @@ export class SignupPage {
   firstName = '';
   lastName = '';
   username = '';
+
   password = '';
   confirmPassword = '';
+
+  // PASSWORD VISIBILITY
+  showPassword = false;
+  showConfirmPassword = false;
+
+  // TOGGLE PASSWORD VISIBILITY
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
 
   constructor(
     private authService: AuthService,
     private alertController: AlertController,
     private router: Router
-  ) {}
+  ) {
+    addIcons({
+      'eye-outline': eyeOutline,
+      'eye-off-outline': eyeOffOutline
+    });
+  }
 
   signup() {
 

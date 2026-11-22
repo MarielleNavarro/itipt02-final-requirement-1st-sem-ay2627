@@ -45,20 +45,42 @@
         </ion-input>
 
         <ion-label> Password </ion-label>
-        <ion-input
-          type="password"
-          placeholder="Create a password"
-          fill="outline"
-          [(ngModel)]="password">
-        </ion-input>
+        <div class="password-input-container">
+          <ion-input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Create a password"
+            fill="outline"
+            [(ngModel)]="password">
+          </ion-input>
+
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility()">
+            <ion-icon
+              [name]="showPassword ? 'eye-outline' : 'eye-off-outline'">
+            </ion-icon>
+          </button>
+        </div>
 
         <ion-label> Confirm Password </ion-label>
-        <ion-input
-          type="password"
-          placeholder="Confirm your password"
-          fill="outline"
-          [(ngModel)]="confirmPassword">
-        </ion-input>
+        <div class="password-input-container">
+          <ion-input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            placeholder="Confirm your password"
+            fill="outline"
+            [(ngModel)]="confirmPassword">
+          </ion-input>
+
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="toggleConfirmPasswordVisibility()">
+            <ion-icon
+              [name]="showConfirmPassword ? 'eye-outline' : 'eye-off-outline'">
+            </ion-icon>
+          </button>
+        </div>
 
         <ion-button expand="block" (click)="signup()">
           Sign Up

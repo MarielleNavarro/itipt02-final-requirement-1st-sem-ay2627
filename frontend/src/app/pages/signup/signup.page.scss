@@ -177,3 +177,31 @@ ion-content {
         padding-right: 22px;
     }
 }
+
+
+.password-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    ion-input {
+        flex: 1;
+        --padding-end: 45px;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 12px;
+        z-index: 5;
+        background: transparent;
+        border: none;
+        padding: 5px;
+        color: #82768f;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
