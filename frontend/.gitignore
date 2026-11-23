@@ -74,3 +74,9 @@ Thumbs.db
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+
+# Environment variables
+.env
+.env.*
+!.env.example
